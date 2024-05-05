@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2022 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ public class CollectionWrapper implements ObjectWrapper {
     this.object = object;
   }
 
+  // Below are the methods inherited from ObjectWrapper, which are not supported by CollectionWrapper.
   @Override
   public Object get(PropertyTokenizer prop) {
     throw new UnsupportedOperationException();
@@ -82,6 +83,8 @@ public class CollectionWrapper implements ObjectWrapper {
   public MetaObject instantiatePropertyValue(String name, PropertyTokenizer prop, ObjectFactory objectFactory) {
     throw new UnsupportedOperationException();
   }
+
+  // Below are the additional methods added to support collection operations
 
   @Override
   public boolean isCollection() {

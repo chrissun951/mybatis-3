@@ -124,7 +124,7 @@ These are extremely important tweaks that modify the way that MyBatis behaves at
 | jdbcTypeForNull                    | Specifies the JDBC type for null values when no specific JDBC type was provided for the parameter. Some drivers require specifying the column JDBC type but others work with generic values like NULL, VARCHAR or OTHER.                                                                                                                                                                                                                         | JdbcType enumeration. Most common are: NULL, VARCHAR and OTHER                                                                             | OTHER                                                 |
 | lazyLoadTriggerMethods             | Specifies which Object's methods trigger a lazy load                                                                                                                                                                                                                                                                                                                                                                                             | A method name list separated by commas                                                                                                     | equals,clone,hashCode,toString                        |
 | defaultScriptingLanguage           | Specifies the language used by default for dynamic SQL generation.                                                                                                                                                                                                                                                                                                                                                                               | A type alias or fully qualified class name.                                                                                                | org.apache.ibatis.scripting.xmltags.XMLLanguageDriver |
-| defaultEnumTypeHandler             | Specifies the `TypeHandler` used by default for Enum. (Since: 3.4.5)                                                                                                                                                                                                                                                                                                                                                                             | A type alias or fully qualified class name.                                                                                                | org.apache.ibatis.type.EnumTypeHandler                |
+| defaultEnumTypeHandler             | Specifies the `TypeHandler` used by default for Enum. (Since: 3.4.5)                                                                                                                                                                                                                                                                                                                                                                             | A type alias or fully qualified class name.                                                                                                | org.apache.ibatis.type.typehandler.EnumTypeHandler                |
 | callSettersOnNulls                 | Specifies if setters or map's put method will be called when a retrieved value is null. It is useful when you rely on Map.keySet() or null value initialization. Note primitives such as (int,boolean,etc.) will not be set to null.                                                                                                                                                                                                             | true &#124; false                                                                                                                          | false                                                 |
 | returnInstanceForEmptyRow          | MyBatis, by default, returns `null` when all the columns of a returned row are NULL. When this setting is enabled, MyBatis returns an empty instance instead. Note that it is also applied to nested results (i.e. collectioin and association). Since: 3.4.2                                                                                                                                                                                    | true &#124; false                                                                                                                          | false                                                 |
 | logPrefix                          | Specifies the prefix string that MyBatis will add to the logger names.                                                                                                                                                                                                                                                                                                                                                                           | Any String                                                                                                                                 | Not set                                               |
@@ -141,34 +141,36 @@ These are extremely important tweaks that modify the way that MyBatis behaves at
 An example of the settings element fully configured is as follows:
 
 ```xml
+
 <settings>
-  <setting name="cacheEnabled" value="true"/>
-  <setting name="lazyLoadingEnabled" value="true"/>
-  <setting name="aggressiveLazyLoading" value="true"/>
-  <setting name="multipleResultSetsEnabled" value="true"/>
-  <setting name="useColumnLabel" value="true"/>
-  <setting name="useGeneratedKeys" value="false"/>
-  <setting name="autoMappingBehavior" value="PARTIAL"/>
-  <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
-  <setting name="defaultExecutorType" value="SIMPLE"/>
-  <setting name="defaultStatementTimeout" value="25"/>
-  <setting name="defaultFetchSize" value="100"/>
-  <setting name="safeRowBoundsEnabled" value="false"/>
-  <setting name="safeResultHandlerEnabled" value="true"/>
-  <setting name="mapUnderscoreToCamelCase" value="false"/>
-  <setting name="localCacheScope" value="SESSION"/>
-  <setting name="jdbcTypeForNull" value="OTHER"/>
-  <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
-  <setting name="defaultScriptingLanguage" value="org.apache.ibatis.scripting.xmltags.XMLLanguageDriver"/>
-  <setting name="defaultEnumTypeHandler" value="org.apache.ibatis.type.EnumTypeHandler"/>
-  <setting name="callSettersOnNulls" value="false"/>
-  <setting name="returnInstanceForEmptyRow" value="false"/>
-  <setting name="logPrefix" value="exampleLogPreFix_"/>
-  <setting name="logImpl" value="SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING"/>
-  <setting name="proxyFactory" value="CGLIB | JAVASSIST"/>
-  <setting name="vfsImpl" value="org.mybatis.example.YourselfVfsImpl"/>
-  <setting name="useActualParamName" value="true"/>
-  <setting name="configurationFactory" value="org.mybatis.example.ConfigurationFactory"/>
+    <setting name="cacheEnabled" value="true"/>
+    <setting name="lazyLoadingEnabled" value="true"/>
+    <setting name="aggressiveLazyLoading" value="true"/>
+    <setting name="multipleResultSetsEnabled" value="true"/>
+    <setting name="useColumnLabel" value="true"/>
+    <setting name="useGeneratedKeys" value="false"/>
+    <setting name="autoMappingBehavior" value="PARTIAL"/>
+    <setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>
+    <setting name="defaultExecutorType" value="SIMPLE"/>
+    <setting name="defaultStatementTimeout" value="25"/>
+    <setting name="defaultFetchSize" value="100"/>
+    <setting name="safeRowBoundsEnabled" value="false"/>
+    <setting name="safeResultHandlerEnabled" value="true"/>
+    <setting name="mapUnderscoreToCamelCase" value="false"/>
+    <setting name="localCacheScope" value="SESSION"/>
+    <setting name="jdbcTypeForNull" value="OTHER"/>
+    <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+    <setting name="defaultScriptingLanguage" value="org.apache.ibatis.scripting.xmltags.XMLLanguageDriver"/>
+    <setting name="defaultEnumTypeHandler" value="org.apache.ibatis.type.typehandler.EnumTypeHandler"/>
+    <setting name="callSettersOnNulls" value="false"/>
+    <setting name="returnInstanceForEmptyRow" value="false"/>
+    <setting name="logPrefix" value="exampleLogPreFix_"/>
+    <setting name="logImpl"
+             value="SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING"/>
+    <setting name="proxyFactory" value="CGLIB | JAVASSIST"/>
+    <setting name="vfsImpl" value="org.mybatis.example.YourselfVfsImpl"/>
+    <setting name="useActualParamName" value="true"/>
+    <setting name="configurationFactory" value="org.mybatis.example.ConfigurationFactory"/>
 </settings>
 ```
 
@@ -295,7 +297,7 @@ Whenever MyBatis sets a parameter on a PreparedStatement or retrieves a value fr
 | `YearMonthTypeHandler`       | `java.time.YearMonth`           | `VARCHAR` or `LONGVARCHAR`                                                             |
 | `JapaneseDateTypeHandler`    | `java.time.chrono.JapaneseDate` | `DATE`                                                                                 |
 
-You can override the type handlers or create your own to deal with unsupported or non-standard types. To do so, implement the interface `org.apache.ibatis.type.TypeHandler` or extend the convenience class `org.apache.ibatis.type.BaseTypeHandler` and optionally map it to a JDBC type. For example:
+You can override the type handlers or create your own to deal with unsupported or non-standard types. To do so, implement the interface `org.apache.ibatis.type.TypeHandler` or extend the convenience class `org.apache.ibatis.type.typehandler.BaseTypeHandler` and optionally map it to a JDBC type. For example:
 
 ```java
 // ExampleTypeHandler.java
@@ -389,8 +391,8 @@ However, we may not want to store names. Our DBA may insist on an integer code i
 ```xml
 <!-- mybatis-config.xml -->
 <typeHandlers>
-  <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
-    javaType="java.math.RoundingMode"/>
+    <typeHandler handler="org.apache.ibatis.type.typehandler.EnumOrdinalTypeHandler"
+                 javaType="java.math.RoundingMode"/>
 </typeHandlers>
 ```
 
@@ -402,8 +404,8 @@ The auto-mapper will automatically use `EnumOrdinalTypeHandler`, so if we want t
 
 ```xml
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.apache.ibatis.submitted.rounding.Mapper">
     <resultMap type="org.apache.ibatis.submitted.rounding.User" id="usermap">
@@ -418,7 +420,7 @@ The auto-mapper will automatically use `EnumOrdinalTypeHandler`, so if we want t
     </select>
     <insert id="insert">
         insert into users (id, name, funkyNumber, roundingMode) values (
-            #{id}, #{name}, #{funkyNumber}, #{roundingMode}
+        #{id}, #{name}, #{funkyNumber}, #{roundingMode}
         )
     </insert>
 
@@ -427,14 +429,14 @@ The auto-mapper will automatically use `EnumOrdinalTypeHandler`, so if we want t
         <result column="name" property="name"/>
         <result column="funkyNumber" property="funkyNumber"/>
         <result column="roundingMode" property="roundingMode"
-         typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+                typeHandler="org.apache.ibatis.type.typehandler.EnumTypeHandler"/>
     </resultMap>
     <select id="getUser2" resultMap="usermap2">
         select * from users2
     </select>
     <insert id="insert2">
         insert into users2 (id, name, funkyNumber, roundingMode) values (
-            #{id}, #{name}, #{funkyNumber}, #{roundingMode, typeHandler=org.apache.ibatis.type.EnumTypeHandler}
+        #{id}, #{name}, #{funkyNumber}, #{roundingMode, typeHandler=org.apache.ibatis.type.typehandler.EnumTypeHandler}
         )
     </insert>
 

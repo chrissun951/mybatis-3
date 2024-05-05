@@ -93,9 +93,10 @@ import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.TypeAliasRegistry;
 import org.apache.ibatis.type.TypeHandler;
-import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.apache.ibatis.type.registry.TypeHandlerRegistry;
+import org.apache.ibatis.type.registry.TypeAliasRegistry;
+import org.apache.ibatis.type.typehandler.EnumTypeHandler;
 
 /**
  * @author Clinton Begin
@@ -189,6 +190,7 @@ public class Configuration {
   }
 
   public Configuration() {
+      //注册类型别名 什么样的类型会在这里注册,
     typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
     typeAliasRegistry.registerAlias("MANAGED", ManagedTransactionFactory.class);
 
@@ -587,8 +589,7 @@ public class Configuration {
   }
 
   /**
-   * Set a default {@link TypeHandler} class for {@link Enum}. A default {@link TypeHandler} is
-   * {@link org.apache.ibatis.type.EnumTypeHandler}.
+   * Set a default {@link TypeHandler} class for {@link Enum}. A default {@link TypeHandler} is {@link EnumTypeHandler}.
    *
    * @param typeHandler
    *          a type handler class for {@link Enum}
@@ -733,11 +734,14 @@ public class Configuration {
     } else if (ExecutorType.REUSE == executorType) {
       executor = new ReuseExecutor(this, transaction);
     } else {
+      // 默认Executor
       executor = new SimpleExecutor(this, transaction);
     }
     if (cacheEnabled) {
+      // 如果启用了缓存,则包装Executor
       executor = new CachingExecutor(executor);
     }
+    // 最后,插件拦截器
     return (Executor) interceptorChain.pluginAll(executor);
   }
 
@@ -959,9 +963,9 @@ public class Configuration {
     cacheRefMap.put(namespace, referencedNamespace);
   }
 
-  /*
-   * Parses all the unprocessed statement nodes in the cache. It is recommended to call this method once all the mappers
-   * are added as it provides fail-fast statement validation.
+  /**
+   * 处理缓存中所有未处理的语句节点,建议在添加所有映射器后调用此方法,以提供快速的语句验证. Parses all the unprocessed statement nodes in the cache. It is
+   * recommended to call this method once all the mappers are added as it provides fail-fast statement validation.
    */
   protected void buildAllStatements() {
     parsePendingResultMaps(true);

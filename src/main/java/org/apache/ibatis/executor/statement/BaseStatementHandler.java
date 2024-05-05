@@ -31,7 +31,7 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
-import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 
 /**
  * @author Clinton Begin

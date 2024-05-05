@@ -31,6 +31,20 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+/**
+ * 是一个参数名解析器,用来按顺序列出方法中的虚参,并对实参进行名称标注。
+ * <p>
+ * 该解析器会从方法参数中查找 {@link Param} 注解,如果存在,则使用注解中的名称作为参数名,否则使用参数索引作为名称。
+ * </p>
+ * <p>
+ * 如果方法参数中有 {@link RowBounds} 或 {@link ResultHandler} 类型参数,则这些参数不会被标注。
+ * </p>
+ * <p>
+ * 如果方法参数中有 {@link Collection} 或数组类型参数,则这些参数会被包装成 {@link ParamMap} 对象,并使用 {@code collection} 或 {@code array} 作为名称。
+ * </p>
+ *
+ * @author <NAME>
+ */
 public class ParamNameResolver {
 
   public static final String GENERIC_NAME_PREFIX = "param";
@@ -62,6 +76,12 @@ public class ParamNameResolver {
 
   private boolean hasParamAnnotation;
 
+  /**
+   * 使用 Configuration 和method构造ParamNameResolver对象。
+   *
+   * @param config
+   * @param method
+   */
   public ParamNameResolver(Configuration config, Method method) {
     this.useActualParamName = config.isUseActualParamName();
     final Class<?>[] paramTypes = method.getParameterTypes();
@@ -116,6 +136,7 @@ public class ParamNameResolver {
   }
 
   /**
+   * 能够在映射文件中引用参数的名称。
    * <p>
    * A single non-special parameter is returned without a name. Multiple parameters are named using the naming rule. In
    * addition to the default names, this method also adds the generic names (param1, param2, ...).

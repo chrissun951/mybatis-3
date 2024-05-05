@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2022 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
  *    limitations under the License.
  */
 /**
- * Object wrappers.
+ * Object wrappers. 对象包装器,使用装饰器模式,对各种类型的对象进行包装,增加额外的功能
  */
 package org.apache.ibatis.reflection.wrapper;

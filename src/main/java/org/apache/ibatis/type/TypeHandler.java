@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,14 +21,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * Java 类型T <-> JDBC Type
+ *
+ *
+ *
+ *
+ *
+ */
+
+/**
  * @author Clinton Begin
  */
 public interface TypeHandler<T> {
 
+  /**
+   * 用于将 Java 对象的值设置到 PreparedStatement 对象中
+   *
+   * @param ps
+   * @param i
+   * @param parameter
+   * @param jdbcType
+   *
+   * @throws SQLException
+   */
   void setParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
 
   /**
-   * Gets the result.
+   * 从 ResultSet 中获取指定列的结果，需要传入列名作为参数 Gets the result.
    *
    * @param rs
    *          the rs
@@ -42,6 +61,16 @@ public interface TypeHandler<T> {
    */
   T getResult(ResultSet rs, String columnName) throws SQLException;
 
+  /**
+   * 从 ResultSet 中获取指定索引位置的结果，需要传入列的索引作为参数
+   *
+   * @param rs
+   * @param columnIndex
+   *
+   * @return
+   *
+   * @throws SQLException
+   */
   T getResult(ResultSet rs, int columnIndex) throws SQLException;
 
   T getResult(CallableStatement cs, int columnIndex) throws SQLException;

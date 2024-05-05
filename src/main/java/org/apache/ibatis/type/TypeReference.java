@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,6 +17,14 @@ package org.apache.ibatis.type;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+/**
+ * 用于包装泛型类型
+ *
+ *
+ * 与TypeHandler组合使用,用于判断TypeHandler的目标类型
+ *
+ */
 
 /**
  * References a generic type.

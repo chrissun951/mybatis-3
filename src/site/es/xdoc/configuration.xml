@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2009-2023 the original author or authors.
+       Copyright 2009-2024 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -427,7 +427,7 @@ SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, environ
                 A type alias or fully qualified class name.
               </td>
               <td>
-                org.apache.ibatis.type.EnumTypeHandler
+                org.apache.ibatis.type.typehandler.EnumTypeHandler
               </td>
             </tr>
             <tr>
@@ -1422,7 +1422,7 @@ public class Author {
         <p>
         Es posible sobrescribir los TypeHanders o crear TypeHanders personalizados para tratar tipos no soportados o no estándares.
         Para ello, debes implementar la interfaz <code>org.apache.ibatis.type.TypeHandler</code> o extender
-        la clase de ayuda <code>org.apache.ibatis.type.BaseTypeHandler</code> y opcionalmente mapear el TypeHandler a un tipo JDBC.
+        la clase de ayuda <code>org.apache.ibatis.type.typehandler.BaseTypeHandler</code> y opcionalmente mapear el TypeHandler a un tipo JDBC.
         Por ejemplo:
         </p>
 

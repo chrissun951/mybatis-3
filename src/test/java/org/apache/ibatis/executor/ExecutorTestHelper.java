@@ -51,7 +51,7 @@ import org.apache.ibatis.scripting.xmltags.DynamicSqlSource;
 import org.apache.ibatis.scripting.xmltags.TextSqlNode;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 
 class ExecutorTestHelper {
 

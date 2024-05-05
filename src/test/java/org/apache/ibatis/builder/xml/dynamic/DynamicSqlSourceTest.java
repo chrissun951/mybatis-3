@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -326,9 +326,9 @@ class DynamicSqlSourceTest extends BaseDataTest {
     DynamicSqlSource source = createDynamicSqlSource(
         new TextSqlNode("INSERT INTO BLOG (ID, NAME, NOTE, COMMENT) VALUES"),
         new ForEachSqlNode(new Configuration(),
-            mixedContents(
-                new TextSqlNode("#{uuu.u}, #{u.id}, #{ u,typeHandler=org.apache.ibatis.type.StringTypeHandler},"
-                    + " #{u:VARCHAR,typeHandler=org.apache.ibatis.type.StringTypeHandler}")),
+            mixedContents(new TextSqlNode(
+                "#{uuu.u}, #{u.id}, #{ u,typeHandler=org.apache.ibatis.type.typehandler.StringTypeHandler},"
+                    + " #{u:VARCHAR,typeHandler=org.apache.ibatis.type.typehandler.StringTypeHandler}")),
             "uuuu", "uu", "u", "(", ")", ","));
     BoundSql boundSql = source.getBoundSql(param);
     assertEquals(4, boundSql.getParameterMappings().size());

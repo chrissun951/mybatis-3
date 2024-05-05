@@ -87,7 +87,7 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
-import org.apache.ibatis.type.UnknownTypeHandler;
+import org.apache.ibatis.type.typehandler.UnknownTypeHandler;
 
 /**
  * @author Clinton Begin

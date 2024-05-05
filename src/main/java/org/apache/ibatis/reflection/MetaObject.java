@@ -28,6 +28,8 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapper;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 
 /**
+ * 元对象, meta= 涵盖,超越,变化 将一个对象封装为元对象, 元对象
+ *
  * @author Clinton Begin
  */
 public class MetaObject {

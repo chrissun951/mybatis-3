@@ -30,7 +30,7 @@ import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.type.TypeHandler;
-import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 
 /**
  * @author Clinton Begin

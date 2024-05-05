@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,6 +24,16 @@ import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.session.ResultHandler;
+
+/**
+ * StatementHandler有个基础的抽象实现类 BaseStatementHandler,BaseStatementHandler有三个具体实现类,
+ * SimpleStatementHandler,PreparedStatementHandler,CallableStatementHandler.
+ *
+ * 但是对外,使用使用RoutingStatementHandler(实现了StatementHandler接口),
+ * RoutingStatementHandler通过构造器入参,使用工厂方法设计模式+委托模式,在内部保存了具体的对象引用,
+ * 然后将所有请求交给委托的对象,
+ *
+ */
 
 /**
  * @author Clinton Begin

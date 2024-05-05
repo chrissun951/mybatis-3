@@ -22,6 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ *
+ * 使用该注解可以给 类 设置别名，设置后，别名和类型的 映射关系便存入TypeAliasRegistry中
+ *
+ */
+
+
+
+/**
  * The annotation that specify alias name.
  * <p>
  * <b>How to use:</b>

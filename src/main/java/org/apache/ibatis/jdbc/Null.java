@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,27 +15,27 @@
  */
 package org.apache.ibatis.jdbc;
 
-import org.apache.ibatis.type.BigDecimalTypeHandler;
-import org.apache.ibatis.type.BlobTypeHandler;
-import org.apache.ibatis.type.BooleanTypeHandler;
-import org.apache.ibatis.type.ByteArrayTypeHandler;
-import org.apache.ibatis.type.ByteTypeHandler;
-import org.apache.ibatis.type.ClobTypeHandler;
-import org.apache.ibatis.type.DateOnlyTypeHandler;
-import org.apache.ibatis.type.DateTypeHandler;
-import org.apache.ibatis.type.DoubleTypeHandler;
-import org.apache.ibatis.type.FloatTypeHandler;
-import org.apache.ibatis.type.IntegerTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.LongTypeHandler;
-import org.apache.ibatis.type.ObjectTypeHandler;
-import org.apache.ibatis.type.ShortTypeHandler;
-import org.apache.ibatis.type.SqlDateTypeHandler;
-import org.apache.ibatis.type.SqlTimeTypeHandler;
-import org.apache.ibatis.type.SqlTimestampTypeHandler;
-import org.apache.ibatis.type.StringTypeHandler;
-import org.apache.ibatis.type.TimeOnlyTypeHandler;
 import org.apache.ibatis.type.TypeHandler;
+import org.apache.ibatis.type.typehandler.BigDecimalTypeHandler;
+import org.apache.ibatis.type.typehandler.BlobTypeHandler;
+import org.apache.ibatis.type.typehandler.BooleanTypeHandler;
+import org.apache.ibatis.type.typehandler.ByteArrayTypeHandler;
+import org.apache.ibatis.type.typehandler.ByteTypeHandler;
+import org.apache.ibatis.type.typehandler.ClobTypeHandler;
+import org.apache.ibatis.type.typehandler.DateOnlyTypeHandler;
+import org.apache.ibatis.type.typehandler.DateTypeHandler;
+import org.apache.ibatis.type.typehandler.DoubleTypeHandler;
+import org.apache.ibatis.type.typehandler.FloatTypeHandler;
+import org.apache.ibatis.type.typehandler.IntegerTypeHandler;
+import org.apache.ibatis.type.typehandler.LongTypeHandler;
+import org.apache.ibatis.type.typehandler.ObjectTypeHandler;
+import org.apache.ibatis.type.typehandler.ShortTypeHandler;
+import org.apache.ibatis.type.typehandler.SqlDateTypeHandler;
+import org.apache.ibatis.type.typehandler.SqlTimeTypeHandler;
+import org.apache.ibatis.type.typehandler.SqlTimestampTypeHandler;
+import org.apache.ibatis.type.typehandler.StringTypeHandler;
+import org.apache.ibatis.type.typehandler.TimeOnlyTypeHandler;
 
 /**
  * @author Clinton Begin

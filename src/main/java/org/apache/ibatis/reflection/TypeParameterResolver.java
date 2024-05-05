@@ -25,6 +25,10 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
 
+/***
+ * 帮助MyBatis 推断出属性、返回值、输入参数中泛型的具体类型
+ */
+
 /**
  * @author Iwao AVE!
  */
@@ -86,6 +90,16 @@ public class TypeParameterResolver {
     return result;
   }
 
+  /***
+   * 除了常规的类型,处理复杂的泛型类型,比如List<String>,Map<String,Integer>,自定义的类型等等,通配符,数组等等 参考
+   * Type的实现,可以看到Type接口有四个实现类,分别是TypeVariable,ParameterizedType,GenericArrayType,WildcardType,
+   *
+   * @param type
+   * @param srcType
+   * @param declaringClass
+   *
+   * @return
+   */
   private static Type resolveType(Type type, Type srcType, Class<?> declaringClass) {
     if (type instanceof TypeVariable) {
       return resolveTypeVar((TypeVariable<?>) type, srcType, declaringClass);

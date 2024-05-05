@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ import org.mockito.Mockito;
 /**
  * Tests for support the {@code java.util.Optional} as return type of mapper method.
  *
- * @since 3.5.0
- *
  * @author Kazuki Shimizu
+ *
+ * @since 3.5.0
  */
 class OptionalOnMapperMethodTest {
 
@@ -64,7 +64,7 @@ class OptionalOnMapperMethodTest {
       Mapper mapper = sqlSession.getMapper(Mapper.class);
       Optional<User> user = mapper.getUserUsingAnnotation(1);
       assertTrue(user.isPresent());
-      assertEquals("User1", user.get().getName());
+      assertEquals("User1", user.map(User::getName).orElse(null));
     }
   }
 
@@ -83,7 +83,7 @@ class OptionalOnMapperMethodTest {
       Mapper mapper = sqlSession.getMapper(Mapper.class);
       Optional<User> user = mapper.getUserUsingXml(2);
       assertTrue(user.isPresent());
-      assertEquals("User2", user.get().getName());
+      assertEquals("User2", user.map(User::getName).orElse(null));
     }
   }
 

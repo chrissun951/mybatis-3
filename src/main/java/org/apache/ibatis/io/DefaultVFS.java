@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -273,11 +272,7 @@ public class DefaultVFS extends VFS {
 
       // File name might be URL-encoded
       if (!file.exists()) {
-        try {
-          file = new File(URLEncoder.encode(jarUrl.toString(), StandardCharsets.UTF_8.name()));
-        } catch (UnsupportedEncodingException e) {
-          throw new RuntimeException("Unsupported encoding?  UTF-8?  That's impossible.");
-        }
+        file = new File(URLEncoder.encode(jarUrl.toString(), StandardCharsets.UTF_8));
       }
 
       if (file.exists()) {

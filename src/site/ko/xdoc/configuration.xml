@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2009-2023 the original author or authors.
+       Copyright 2009-2024 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -436,7 +436,7 @@ SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(reader, environ
                 타입별칭이나 패키지 경로를 포함한 클래스명
               </td>
               <td>
-                org.apache.ibatis.type.EnumTypeHandler
+                  org.apache.ibatis.type.typehandler.EnumTypeHandler
               </td>
             </tr>
             <tr>
