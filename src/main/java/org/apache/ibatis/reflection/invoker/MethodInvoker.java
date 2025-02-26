@@ -32,7 +32,7 @@ public class MethodInvoker implements Invoker {
     this.method = method;
 
     /**
-     * 这里是什么逻辑,
+     * 这里是什么逻辑, 作用是取出一个类型,如果方法的参数只有一个,那么取出这个参数的类型,否则取出返回值类型.
      */
     if (method.getParameterTypes().length == 1) {
       type = method.getParameterTypes()[0];
@@ -41,6 +41,17 @@ public class MethodInvoker implements Invoker {
     }
   }
 
+  /**
+   * jdk反射实现反射方法调用
+   *
+   * @param target
+   * @param args
+   *
+   * @return
+   *
+   * @throws IllegalAccessException
+   * @throws InvocationTargetException
+   */
   @Override
   public Object invoke(Object target, Object[] args) throws IllegalAccessException, InvocationTargetException {
     try {

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -29,6 +29,11 @@ public class Slf4jImpl implements Log {
 
   private Log log;
 
+  /**
+   * 构造器 实现对Slf4jLoggerImpl, Slf4jLocationAwareLoggerImpl的选择 /装饰
+   *
+   * @param clazz
+   */
   public Slf4jImpl(String clazz) {
     Logger logger = LoggerFactory.getLogger(clazz);
 

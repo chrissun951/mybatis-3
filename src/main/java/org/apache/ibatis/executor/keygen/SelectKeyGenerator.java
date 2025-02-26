@@ -27,6 +27,8 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.RowBounds;
 
 /**
+ * 可以真正的生成主键, 先执行一段特定的 SQL 语句获取一个值，然后将该值赋给 Java对象的自增属性
+ *
  * @author Clinton Begin
  * @author Jeff Butler
  */

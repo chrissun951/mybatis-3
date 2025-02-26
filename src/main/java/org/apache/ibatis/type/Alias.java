@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import java.lang.annotation.Target;
  * 使用该注解可以给 类 设置别名，设置后，别名和类型的 映射关系便存入TypeAliasRegistry中
  *
  */
-
-
 
 /**
  * The annotation that specify alias name.

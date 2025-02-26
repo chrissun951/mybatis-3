@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -44,6 +44,9 @@ import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 import org.apache.ibatis.util.MapUtil;
 
 /**
+ * 为具有主键自增功能的数据库准备, 提供自增主键的回写功能 在数据库主键自增结束后，将自增 出来的主键读取出来并赋给 Java 对象。这些工作都是在数据插入完 成后进行的，即在 processAfter 方法中进行。而
+ * processBefore方 法中不需要进行任何操作
+ *
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -71,6 +74,13 @@ public class Jdbc3KeyGenerator implements KeyGenerator {
     processBatch(ms, stmt, parameter);
   }
 
+  /**
+   * Statement对象的 getGeneratedKeys 方法能返回此语句操作自增生成的主键，如果此语句没有 产生自增主键，则结果为空 ResultSet对象
+   *
+   * @param ms
+   * @param stmt
+   * @param parameter
+   */
   public void processBatch(MappedStatement ms, Statement stmt, Object parameter) {
     final String[] keyProperties = ms.getKeyProperties();
     if (keyProperties == null || keyProperties.length == 0) {

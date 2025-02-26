@@ -144,6 +144,8 @@ class SqlSessionTest extends BaseDataTest {
     }
   }
 
+
+
   @Test
   void shouldRollbackAnUnUsedSqlSession() {
     try (SqlSession session = sqlMapper.openSession(TransactionIsolationLevel.SERIALIZABLE)) {

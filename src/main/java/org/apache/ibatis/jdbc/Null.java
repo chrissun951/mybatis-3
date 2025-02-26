@@ -38,6 +38,9 @@ import org.apache.ibatis.type.typehandler.StringTypeHandler;
 import org.apache.ibatis.type.typehandler.TimeOnlyTypeHandler;
 
 /**
+ * 这个类干什么的, 使用 Null的枚举值进行参数设置，确保了参数值虽然为 null， 但参数的类型是明确的。而具有明确的参数类型在 PreparedStatement 的 setNull函数中是必需的，
+ * SqlRunner类为参数赋null值时最终调 用了下面的 setNull函数 记录java类型,以及对应类型的处理器,和对应的jdbc类型
+ *
  * @author Clinton Begin
  * @author Adam Gent
  */

@@ -17,6 +17,7 @@ package com.chana.mybatis.test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.IntStream;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
@@ -27,20 +28,22 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.junit.jupiter.api.Test;
 
 import generator.domain.AccountTbl;
 import generator.mapper.AccountTblMapper;
 
 public class MybatisLauncher {
 
-  public static void main1(String[] args) throws IOException {
+  public static void javaConfig() throws IOException {
 
     Configuration configuration = new Configuration();
 
     // Creating an UnpooledDataSource for simplicity
     UnpooledDataSource dataSource = new UnpooledDataSource();
     dataSource.setDriver("com.mysql.cj.jdbc.Driver");
-    dataSource.setUrl("jdbc:mysql://localhost:33106/db_account?useUnicode=true&characterEncoding=utf-8&useSSL=false");
+    dataSource
+        .setUrl("jdbc:mysql://localhost:33106/db_account?useUnicode=true&characterEncoding=utf-8&useSSL" + "=false");
     dataSource.setUsername("root");
     dataSource.setPassword("123456");
 
@@ -77,30 +80,32 @@ public class MybatisLauncher {
     }
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void xmlConfig() {
     String resource = "mapper/mybatis-config.xml";
-    InputStream inputStream = Resources.getResourceAsStream(resource);
-    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+    InputStream inputStream = null;
+    try {
+      //这里例子通过Resources加载配置文件,有其它方式吗,
+      //这部分的功能jdk自己能实现吗,mybatis为什么额外实现,
+      inputStream = Resources.getResourceAsStream(resource);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    //解析过程,是通过build实现
+    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder()
+            .build(inputStream);
 
     System.out.println("sqlSessionFactory = " + sqlSessionFactory);
 
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      // 什么情况下会用另一个实现类,
-      AccountTbl accountTbl = new AccountTbl();
-      accountTbl.setUserId("33");
-      accountTbl.setMoney(44);
-
       AccountTblMapper mapper = sqlSession.getMapper(AccountTblMapper.class);
-      // int insert = mapper.insert(accountTbl);
-      // System.out.println("insert = " + insert);
-      // sqlSession.commit();
-      //
-      // int insert = sqlSession.insert("generator.mapper.AccountTblMapper.insert", accountTbl);
-      AccountTbl o = (AccountTbl) sqlSession.selectOne("generator.mapper.AccountTblMapper.selectByPrimaryKey", 88L);
-      //
-      AccountTbl accountTbl1 = mapper.selectByPrimaryKey(1L);
-      System.out.println("o = " + accountTbl1);
+      AccountTbl o = mapper.selectByPrimaryKey(88L);
+      System.out.println("o = " + o);
     }
   }
+
+  public static void main(String[] args) {
+    xmlConfig();
+  }
+
 
 }

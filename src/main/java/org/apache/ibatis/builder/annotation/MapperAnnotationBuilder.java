@@ -138,7 +138,8 @@ public class MapperAnnotationBuilder {
   }
 
   private static boolean canHaveStatement(Method method) {
-    // issue #237
+    // issue #237 为了排除桥接方法。
+    // 桥接方法是为了匹配泛型的类型擦除而由编译器自动引入的，并非用户编写的方法，因此要排除掉
     return !method.isBridge() && !method.isDefault();
   }
 

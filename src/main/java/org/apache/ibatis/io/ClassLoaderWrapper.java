@@ -19,6 +19,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
+ * ClassLoaderWrapper 类的存在是为了解决 类加载器的兼容性 和 资源加载的可靠性 问题。它封装了多种类加载器的访问逻辑，确保在不同环境下（如 Web 容器、OSGi 容器、独立应用等）能正确加载类或资源
+ *
+ *
  * A class to wrap access to multiple class loaders making them work as one
  *
  * @author Clinton Begin

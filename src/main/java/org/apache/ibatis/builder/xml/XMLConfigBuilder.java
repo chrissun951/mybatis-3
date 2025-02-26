@@ -107,6 +107,7 @@ public class XMLConfigBuilder extends BaseBuilder {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
     parsed = true;
+    //解析整个文档,根节点,
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
@@ -354,6 +355,15 @@ public class XMLConfigBuilder extends BaseBuilder {
     throw new BuilderException("Environment declaration requires a TransactionFactory.");
   }
 
+  /**
+   * 解析xml中的dataSource节点
+   *
+   * @param context
+   *
+   * @return
+   *
+   * @throws Exception
+   */
   private DataSourceFactory dataSourceElement(XNode context) throws Exception {
     if (context != null) {
       String type = context.getStringAttribute("type");

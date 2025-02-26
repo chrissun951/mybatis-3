@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -600,6 +600,9 @@ public abstract class AbstractSQL<T> {
     return sb.toString();
   }
 
+  /**
+   * A safe appendable that prevent append empty string.
+   */
   private static class SafeAppendable {
     private final Appendable appendable;
     private boolean empty = true;
@@ -610,7 +613,7 @@ public abstract class AbstractSQL<T> {
 
     public SafeAppendable append(CharSequence s) {
       try {
-        if (empty && s.length() > 0) {
+        if (empty && !s.isEmpty()) {
           empty = false;
         }
         appendable.append(s);
@@ -626,6 +629,9 @@ public abstract class AbstractSQL<T> {
 
   }
 
+  /**
+   * A SQL statement builder. 完整的表示一条SQL语句
+   */
   private static class SQLStatement {
 
     public enum StatementType {

@@ -94,7 +94,9 @@ public class XMLMapperBuilder extends BaseBuilder {
   }
 
   public void parse() {
+    //是否是第一次解析
     if (!configuration.isResourceLoaded(resource)) {
+      //mapper.xml的根节点是/mapper
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
       bindMapperForNamespace();

@@ -105,8 +105,8 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
       // 根据入参,执行器类型构造了一个执行器,
       final Executor executor = configuration.newExecutor(tx, execType);
       // 门面模式封装成了一个SqlSession对象,用于支持的增删改查操作
-      //  return new DefaultSqlSession(configuration, executor, autoCommit);
-        return createSqlSession(configuration, executor, autoCommit);
+      // return new DefaultSqlSession(configuration, executor, autoCommit);
+      return createSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {
       closeTransaction(tx); // may have fetched a connection so lets call close()
       throw ExceptionFactory.wrapException("Error opening session.  Cause: " + e, e);

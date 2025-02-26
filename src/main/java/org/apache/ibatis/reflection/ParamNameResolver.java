@@ -17,13 +17,7 @@ package org.apache.ibatis.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.binding.MapperMethod.ParamMap;
@@ -118,12 +112,43 @@ public class ParamNameResolver {
     names = Collections.unmodifiableSortedMap(map);
   }
 
-  private String getActualParamName(Method method, int paramIndex) {
-    return ParamNameUtil.getParamNames(method).get(paramIndex);
-  }
-
   private static boolean isSpecialParameter(Class<?> clazz) {
     return RowBounds.class.isAssignableFrom(clazz) || ResultHandler.class.isAssignableFrom(clazz);
+  }
+
+  /**
+   * Wrap to a {@link ParamMap} if object is {@link Collection} or array.
+   *
+   * @param object
+   *          a parameter object
+   * @param actualParamName
+   *          an actual parameter name (If specify a name, set an object to {@link ParamMap} with specified name)
+   *
+   * @return a {@link ParamMap}
+   *
+   * @since 3.5.5
+   */
+  public static Object wrapToMapIfCollection(Object object, String actualParamName) {
+    if (object instanceof Collection) {
+      ParamMap<Object> map = new ParamMap<>();
+      map.put("collection", object);
+      if (object instanceof List) {
+        map.put("list", object);
+      }
+      Optional.ofNullable(actualParamName).ifPresent(name -> map.put(name, object));
+      return map;
+    }
+    if (object != null && object.getClass().isArray()) {
+      ParamMap<Object> map = new ParamMap<>();
+      map.put("array", object);
+      Optional.ofNullable(actualParamName).ifPresent(name -> map.put(name, object));
+      return map;
+    }
+    return object;
+  }
+
+  private String getActualParamName(Method method, int paramIndex) {
+    return ParamNameUtil.getParamNames(method).get(paramIndex);
   }
 
   /**
@@ -170,37 +195,6 @@ public class ParamNameResolver {
       }
       return param;
     }
-  }
-
-  /**
-   * Wrap to a {@link ParamMap} if object is {@link Collection} or array.
-   *
-   * @param object
-   *          a parameter object
-   * @param actualParamName
-   *          an actual parameter name (If specify a name, set an object to {@link ParamMap} with specified name)
-   *
-   * @return a {@link ParamMap}
-   *
-   * @since 3.5.5
-   */
-  public static Object wrapToMapIfCollection(Object object, String actualParamName) {
-    if (object instanceof Collection) {
-      ParamMap<Object> map = new ParamMap<>();
-      map.put("collection", object);
-      if (object instanceof List) {
-        map.put("list", object);
-      }
-      Optional.ofNullable(actualParamName).ifPresent(name -> map.put(name, object));
-      return map;
-    }
-    if (object != null && object.getClass().isArray()) {
-      ParamMap<Object> map = new ParamMap<>();
-      map.put("array", object);
-      Optional.ofNullable(actualParamName).ifPresent(name -> map.put(name, object));
-      return map;
-    }
-    return object;
   }
 
 }

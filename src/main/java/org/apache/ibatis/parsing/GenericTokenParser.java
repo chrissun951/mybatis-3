@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 package org.apache.ibatis.parsing;
 
 /**
+ * 占位符解析器,
+ *
  * @author Clinton Begin
  */
 public class GenericTokenParser {
@@ -30,6 +32,16 @@ public class GenericTokenParser {
     this.handler = handler;
   }
 
+  /**
+   * 占位符的定位,然后把占位符的替换工作交给与其关联的 TokenHandler 处理 假设“openToken=＃{”“closeToken=}”，向 GenericTokenParser中的 parse方法传入的参数
+   * 为“jdbc：mysql：//127.0.0.1：3306/${dbname}？serverTimezone=UTC”，则 parse方法会将被“＃{”和“}”包围的 dbname 字符串解析出来，作为输入参数传入 handler
+   * 中的handleToken方法，然后用 handleToken方法的返回值替换“${dbname}”字符串。
+   *
+   * @param text
+   *          the text to parse
+   *
+   * @return the parsed text
+   */
   public String parse(String text) {
     if (text == null || text.isEmpty()) {
       return "";

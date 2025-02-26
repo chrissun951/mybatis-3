@@ -13,11 +13,31 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-/**
- * Utilities to read resources.
- */
-package org.apache.ibatis.io;
+package generator.mapper;
+
+import generator.domain.AccountTbl;
 
 /**
+ * @author sjh
  *
+ * @description 针对表【account_tbl】的数据库操作Mapper
+ *
+ * @createDate 2024-04-24 00:50:10
+ *
+ * @Entity generator.domain.AccountTbl
  */
+public interface AccountTblMapper {
+
+  int deleteByPrimaryKey(Long id);
+
+  int insert(AccountTbl record);
+
+  int insertSelective(AccountTbl record);
+
+  AccountTbl selectByPrimaryKey(Long id);
+
+  int updateByPrimaryKeySelective(AccountTbl record);
+
+  int updateByPrimaryKey(AccountTbl record);
+
+}

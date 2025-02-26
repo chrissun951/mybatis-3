@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -32,6 +32,10 @@ import java.util.regex.Pattern;
  * You are welcome to use this class for your own purposes,<br>
  * but if there is some feature/enhancement you need for your own usage,<br>
  * please make and modify your own copy instead of sending us an enhancement request.<br>
+ * <br/>
+ * <p>
+ * 内部测试工具
+ * </p>
  *
  * @author Clinton Begin
  */

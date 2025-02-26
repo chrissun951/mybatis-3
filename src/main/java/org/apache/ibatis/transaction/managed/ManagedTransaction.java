@@ -41,7 +41,10 @@ public class ManagedTransaction implements Transaction {
   private DataSource dataSource;
   private TransactionIsolationLevel level;
   private Connection connection;
+  // 是否关闭连接,可以设置连接是否已关闭,
   private final boolean closeConnection;
+  //没有设置自动提交的能力,所以这里默认设置为false
+
 
   public ManagedTransaction(Connection connection, boolean closeConnection) {
     this.connection = connection;
@@ -62,6 +65,7 @@ public class ManagedTransaction implements Transaction {
     return this.connection;
   }
 
+  //提交,回滚方法实现为空,交给容器实现,
   @Override
   public void commit() throws SQLException {
     // Does nothing

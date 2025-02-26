@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -29,7 +29,27 @@ import org.apache.ibatis.scripting.LanguageDriver;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * 数据库操作语句、输入/输出参数等信息
+ */
+
+/**
  * @author Clinton Begin
+ *         <p>
+ *         <p>
+ *         MappedStatement 类在 MyBatis 框架中扮演着非常重要的角色。它主要用于封装 SQL 语句的配置信息，包括 SQL 语句本身、参数映射、结果映射、缓存配置等。具体来说，MappedStatement
+ *         类的作用可以概括为以下几点：
+ *         <p>
+ *         封装 SQL 配置信息：MappedStatement 包含了 SQL 语句的详细配置，如 SQL 语句字符串、参数类型、结果类型等。
+ *         <p>
+ *         管理 SQL 执行环境：它关联了 MyBatis 的 Configuration 对象，通过这个对象可以访问到 MyBatis 的全局配置信息。
+ *         <p>
+ *         支持多种 SQL 操作：MappedStatement 可以用于各种 SQL 操作，如查询、插入、更新和删除等。
+ *         <p>
+ *         缓存管理：它还包含了缓存相关的配置信息，如是否启用缓存、缓存的类型等。
+ *         <p>
+ *         日志记录：通过 LogFactory 和 Log 接口，可以记录 SQL 执行的日志信息，便于调试和性能监控。
+ *         <p>
+ *         总结来说，MappedStatement 是 MyBatis 中用于管理和执行 SQL 语句的核心类之一，它将 SQL 语句及其相关配置信息封装在一起，为 MyBatis 的 SQL 执行提供了基础支持。
  */
 public final class MappedStatement {
 
@@ -56,6 +76,13 @@ public final class MappedStatement {
   private Log statementLog;
   private LanguageDriver lang;
   private String[] resultSets;
+  /**
+   * 是否是脏查询，如果是，则不进行缓存 关联builder.dirtySelect(boolean dirtySelect)
+   * <p>
+   * 提供一个配置选项，用于表示某个 SQL 操作是否是“脏查询”。通过构建器模式，可以在创建 MappedStatement 对象时设置这个选项，并在运行时通过 getter 方法检查这个选项的值。
+   * <p>
+   * 总结来说，dirtySelect 是一个布尔类型的配置选项，用于控制和检查 SQL 操作是否允许读取未提交的数据。这个选项通过构建器模式进行设置，并通过 getter 方法进行访问。
+   */
   private boolean dirtySelect;
 
   MappedStatement() {

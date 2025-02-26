@@ -25,19 +25,26 @@ import org.apache.ibatis.mapping.ResultSetType;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
-import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 import org.apache.ibatis.type.registry.TypeAliasRegistry;
+import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 
 /**
  * @author Clinton Begin
  */
 public abstract class BaseBuilder {
   protected final Configuration configuration;
+  /**
+   * 类型别名注册表
+   */
   protected final TypeAliasRegistry typeAliasRegistry;
+  /**
+   * 类型处理器注册表
+   */
   protected final TypeHandlerRegistry typeHandlerRegistry;
 
   public BaseBuilder(Configuration configuration) {
     this.configuration = configuration;
+
     this.typeAliasRegistry = this.configuration.getTypeAliasRegistry();
     this.typeHandlerRegistry = this.configuration.getTypeHandlerRegistry();
   }
@@ -129,6 +136,7 @@ public abstract class BaseBuilder {
   }
 
   protected <T> Class<? extends T> resolveAlias(String alias) {
+
     return typeAliasRegistry.resolveAlias(alias);
   }
 }

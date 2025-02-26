@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -48,18 +48,16 @@ class GenericTokenParserTest {
   @ParameterizedTest
   @MethodSource("shouldDemonstrateGenericTokenReplacementProvider")
   void shouldDemonstrateGenericTokenReplacement(String expected, String text) {
-    GenericTokenParser parser = new GenericTokenParser("${", "}",
-        new VariableTokenHandler(new HashMap<String, String>() {
-          private static final long serialVersionUID = 1L;
-
-          {
-            put("first_name", "James");
-            put("initial", "T");
-            put("last_name", "Kirk");
-            put("var{with}brace", "Hiya");
-            put("", "");
-          }
-        }));
+    GenericTokenParser parser = new GenericTokenParser("${", "}", new VariableTokenHandler(new HashMap<>() {
+      private static final long serialVersionUID = 1L;
+      {
+        put("first_name", "James");
+        put("initial", "T");
+        put("last_name", "Kirk");
+        put("var{with}brace", "Hiya");
+        put("", "");
+      }
+    }));
     assertEquals(expected, parser.parse(text));
   }
 

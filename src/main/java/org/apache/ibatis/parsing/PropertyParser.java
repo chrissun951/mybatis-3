@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -73,6 +73,16 @@ public class PropertyParser {
       return variables == null ? defaultValue : variables.getProperty(key, defaultValue);
     }
 
+    /**
+     * Handle the token and return the replacement value. 根据一个字符串,给出另一个字符串 例如: ${name} -> "Tom" 例如: ${name:default} ->
+     * "Tom" 具体实现中,会以content作为key,从variables中取出value,如果variables中不存在key,则返回content作为value 支持默认值,使用方式,如 ${name:default}
+     * 如果没有默认值,content形如key
+     *
+     * @param content
+     *          the token content to be replaced
+     *
+     * @return the replacement value
+     */
     @Override
     public String handleToken(String content) {
       if (variables != null) {

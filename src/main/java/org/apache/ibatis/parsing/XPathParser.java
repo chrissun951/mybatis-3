@@ -257,6 +257,7 @@ public class XPathParser {
           // NOP
         }
       });
+      //在创建阶段进行了解析,调用的是jdk的解析能力,解析的结果是一个Document对象
       return builder.parse(inputSource);
     } catch (Exception e) {
       throw new BuilderException("Error creating document instance.  Cause: " + e, e);

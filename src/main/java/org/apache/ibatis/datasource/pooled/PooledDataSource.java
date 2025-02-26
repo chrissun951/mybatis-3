@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -529,7 +529,7 @@ public class PooledDataSource implements DataSource {
               if (log.isDebugEnabled()) {
                 log.debug("PooledDataSource: Could not get a good connection to the database.");
               }
-              throw new SQLException("PooledDataSource: Could not get a good connection to the database.");
+              throw new SQLException("PooledDataSource: Could not get a good connection to the database" + ".");
             }
           }
         }
@@ -541,10 +541,11 @@ public class PooledDataSource implements DataSource {
 
     if (conn == null) {
       if (log.isDebugEnabled()) {
-        log.debug("PooledDataSource: Unknown severe error condition.  The connection pool returned a null connection.");
+        log.debug(
+            "PooledDataSource: Unknown severe error condition.  The connection pool returned a null " + "connection.");
       }
       throw new SQLException(
-          "PooledDataSource: Unknown severe error condition.  The connection pool returned a null connection.");
+          "PooledDataSource: Unknown severe error condition.  The connection pool returned a null " + "connection.");
     }
 
     return conn;

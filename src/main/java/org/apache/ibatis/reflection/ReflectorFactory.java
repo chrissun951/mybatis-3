@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,11 +15,21 @@
  */
 package org.apache.ibatis.reflection;
 
+/**
+ * Factory for creating {@link Reflector} instances.
+ */
 public interface ReflectorFactory {
 
   boolean isClassCacheEnabled();
 
   void setClassCacheEnabled(boolean classCacheEnabled);
 
+  /**
+   * 获取 type的反射对象/反射器? 解析type的构造器,字段,方法等信息,并封装成Reflector对象返回.
+   *
+   * @param type
+   *
+   * @return
+   */
   Reflector findForClass(Class<?> type);
 }

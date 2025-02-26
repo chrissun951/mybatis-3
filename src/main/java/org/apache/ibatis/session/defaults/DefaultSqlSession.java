@@ -151,6 +151,7 @@ public class DefaultSqlSession implements SqlSession {
     try {
       // 查询过程,首先获取MappedStatement对象
       MappedStatement ms = configuration.getMappedStatement(statement);
+      // 设置dirty标记, |= 运算符表示或赋值, 即dirty = dirty || ms.isDirtySelect()
       dirty |= ms.isDirtySelect();
       // 实际执行的是Executor的query方法,
       // query方法只有两个选择,一种带缓存,一种不带缓存,

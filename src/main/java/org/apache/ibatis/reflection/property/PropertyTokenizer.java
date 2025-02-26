@@ -40,6 +40,7 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
       name = fullname.substring(0, delim);
       children = fullname.substring(delim + 1);
     } else {
+      // 如果不存在.号, 则认为是根属性
       name = fullname;
       children = null;
     }

@@ -19,23 +19,35 @@ import java.sql.*;
 
 public class JDBCTest {
 
-  public static void main(String[] args) throws SQLException, ClassNotFoundException {
+  public static void main(String[] args) throws SQLException {
     // jdbc连接数据库
     // Class.forName("com.mysql.cj.jdbc.Driver");
     // 创建数据库连接对象
-    Connection conection = DriverManager.getConnection(
-        "jdbc:mysql://localhost:33106/db_account?useUnicode=true" + "&characterEncoding=utf-8", "root", "123456");
-    // 创建sql语句
-    PreparedStatement statement = conection.prepareStatement("select * from account_tbl");
-    conection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-    // 执行sql语句
-    ResultSet resultSet = statement.executeQuery();
-    // 处理结果集
-    while (resultSet.next()) {
-      System.out.println(resultSet.getString("id"));
-    }
+    String url = "jdbc:mysql://localhost:33106/db_account?useUnicode=true" + "&characterEncoding=utf-8";
+    String root = "root";
+    String number = "123456";
 
-    conection.close();
+    // 处理结果集
+
+    try (Connection conection = DriverManager.getConnection(url, root, number)) {
+      // 创建sql语句
+      PreparedStatement statement = conection.prepareStatement("select * from account_tbl where id = ?");
+      statement.setInt(1, 2);
+      conection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+      // 执行sql语句
+      ResultSet resultSet = statement.executeQuery();
+      while (resultSet.next()) {
+        Object object1 = resultSet.getObject(1);
+        Object object2 = resultSet.getObject(2);
+        Object object3 = resultSet.getObject(3);
+        // 拼接打印三列数据
+        System.out.println(object1 + ", " + object2 + ", " + object3);
+        // System.out.println(resultSet.getString("id"));
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
   }
 }

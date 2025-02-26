@@ -25,8 +25,8 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.submitted.autodiscover.mappers.DummyMapper;
-import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 import org.apache.ibatis.type.registry.TypeAliasRegistry;
+import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

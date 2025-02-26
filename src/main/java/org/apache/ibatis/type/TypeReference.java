@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 /**
  * 用于包装泛型类型
  *
+ * 类型参考器
  *
  * 与TypeHandler组合使用,用于判断TypeHandler的目标类型
  *
@@ -41,6 +42,7 @@ public abstract class TypeReference<T> {
   private final Type rawType;
 
   protected TypeReference() {
+    // getClass,当前类对象
     rawType = getSuperclassTypeParameter(getClass());
   }
 
@@ -56,6 +58,7 @@ public abstract class TypeReference<T> {
           + "Remove the extension or add a type parameter to it.");
     }
 
+    // 获取BaseTypeHandler<T>中的T
     Type rawType = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
     // TODO remove this when Reflector is fixed to return Types
     if (rawType instanceof ParameterizedType) {

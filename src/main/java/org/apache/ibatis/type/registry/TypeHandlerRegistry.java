@@ -64,7 +64,7 @@ public final class TypeHandlerRegistry {
 
   private final Map<JdbcType, TypeHandler<?>> jdbcTypeHandlerMap = new EnumMap<>(JdbcType.class);
   // 一个Java 类型看对应多个jdbc类型，比如java.util.Date对应JdbcType.DATE和JdbcType.TIMESTAMP
-  //一个TypeHandler只处理一个类型,
+  // 一个TypeHandler只处理一个类型,
   private final Map<Type, Map<JdbcType, TypeHandler<?>>> typeHandlerMap = new ConcurrentHashMap<>();
 
   private final TypeHandler<Object> unknownTypeHandler;

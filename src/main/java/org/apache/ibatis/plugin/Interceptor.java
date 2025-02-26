@@ -25,6 +25,7 @@ public interface Interceptor {
   Object intercept(Invocation invocation) throws Throwable;
 
   default Object plugin(Object target) {
+    // 调用 Plugin.wrap方法给出一个原有对象的包装对象，然后用该对象来替换原有对象
     return Plugin.wrap(target, this);
   }
 

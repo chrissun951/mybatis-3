@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2022 the original author or authors.
+ *    Copyright 2009-2024 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
  *    limitations under the License.
  */
 /**
- * External transaction.
+ * External transaction. 容器事务,实现都是空方法,具体实现交给容器,比如spring,springboot等框架实现.
  */
 package org.apache.ibatis.transaction.managed;

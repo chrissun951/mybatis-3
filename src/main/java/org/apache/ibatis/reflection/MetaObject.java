@@ -28,11 +28,16 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapper;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 
 /**
- * 元对象, meta= 涵盖,超越,变化 将一个对象封装为元对象, 元对象
+ * 元对象, meta= 涵盖,超越,变化 将一个对象封装为元对象, 元对象 MetaObject类中涵盖了对应 Object类中的全部信息，并经过变化 和拆解得到了一些更为细节的信息。因此，可以将 MetaObject类理解
+ * 为一个涵盖对象（Object）中更多细节信息和功能的类，称为“元对 象”
  *
  * @author Clinton Begin
  */
 public class MetaObject {
+
+  /**
+   * 在原始包装对象的基础上,增加对象包装器,对象工厂,对象包装器工厂,反射工厂
+   */
 
   private final Object originalObject;
   private final ObjectWrapper objectWrapper;

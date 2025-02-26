@@ -139,7 +139,7 @@ public class JdbcTransaction implements Transaction {
   }
 
   /**
-   * 开启连接,就是从数据源中获取一个连接,并设置事务隔离级别和自动提交
+   * 开启连接,就是从数据源中获取一个连接,并设置事务隔离级别和自动提交的属性
    *
    * @throws SQLException
    */

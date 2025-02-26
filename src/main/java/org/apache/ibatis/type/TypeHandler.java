@@ -24,9 +24,8 @@ import java.sql.SQLException;
  * Java 类型T <-> JDBC Type
  *
  *
- *
- *
- *
+ *将 Java 对象的值设置到 PreparedStatement 对象中,或者
+ * 从 ResultSet 对象中获取指定列(通过列名,或者列索引定位)的结果。
  */
 
 /**

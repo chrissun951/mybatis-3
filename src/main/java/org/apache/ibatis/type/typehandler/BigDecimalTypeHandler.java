@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import org.apache.ibatis.type.JdbcType;
 
 /**
+ * 类型处理器的具体实现,其实都在驱动包中, 类型处理器,只是做了分类,分组处理,更内聚,更清晰,更易于维护,
+ *
  * @author Clinton Begin
  */
 public class BigDecimalTypeHandler extends BaseTypeHandler<BigDecimal> {

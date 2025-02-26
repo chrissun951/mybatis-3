@@ -30,10 +30,6 @@ import org.apache.ibatis.transaction.Transaction;
 /**
  * 核心作用是处理SQL请求、事物管理、维护缓存以及批处理等 。执行器在的角色更像是一个管理员，接收SQL请求，然后根据缓存、批处理等逻辑来决定如何执行这个SQL请求。并交给JDBC处理器执行具体SQL。
  */
-
-/**
- * @author Clinton Begin
- */
 public interface Executor {
 
   ResultHandler NO_RESULT_HANDLER = null;
