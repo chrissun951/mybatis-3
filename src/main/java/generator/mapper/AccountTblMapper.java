@@ -40,4 +40,5 @@ public interface AccountTblMapper {
 
   int updateByPrimaryKey(AccountTbl record);
 
+
 }

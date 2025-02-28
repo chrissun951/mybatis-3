@@ -43,7 +43,7 @@ public class MybatisLauncher {
     UnpooledDataSource dataSource = new UnpooledDataSource();
     dataSource.setDriver("com.mysql.cj.jdbc.Driver");
     dataSource
-        .setUrl("jdbc:mysql://localhost:33106/db_account?useUnicode=true&characterEncoding=utf-8&useSSL" + "=false");
+      .setUrl("jdbc:mysql://localhost:33106/db_account?useUnicode=true&characterEncoding=utf-8&useSSL" + "=false");
     dataSource.setUsername("root");
     dataSource.setPassword("123456");
 
@@ -60,7 +60,7 @@ public class MybatisLauncher {
     String resource = "classpath:mapper/AccountTblMapper.xml"; // 你的 XML 映射器文件路径
     try (InputStream inputStream = MybatisLauncher.class.getResourceAsStream("/" + resource)) {
       XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(inputStream, configuration, resource,
-          configuration.getSqlFragments());
+        configuration.getSqlFragments());
       xmlMapperBuilder.parse();
     } catch (Exception e) {
       e.printStackTrace();
@@ -80,21 +80,17 @@ public class MybatisLauncher {
     }
   }
 
-  public static void xmlConfig() {
+  public static void xmlConfig() throws IOException {
     String resource = "mapper/mybatis-config.xml";
-    InputStream inputStream = null;
-    try {
-      //这里例子通过Resources加载配置文件,有其它方式吗,
-      //这部分的功能jdk自己能实现吗,mybatis为什么额外实现,
-      inputStream = Resources.getResourceAsStream(resource);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    //解析过程,是通过build实现
-    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder()
-            .build(inputStream);
 
-    System.out.println("sqlSessionFactory = " + sqlSessionFactory);
+    InputStream inputStream = null;
+    //这里例子通过Resources加载配置文件,有其它方式吗,
+    //这部分的功能jdk自己能实现吗,mybatis为什么额外实现,
+    //comment by sjh: io包
+    inputStream = Resources.getResourceAsStream(resource);
+    //解析过程,是通过build实现
+    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
 
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       AccountTblMapper mapper = sqlSession.getMapper(AccountTblMapper.class);
@@ -104,7 +100,11 @@ public class MybatisLauncher {
   }
 
   public static void main(String[] args) {
-    xmlConfig();
+    try {
+      xmlConfig();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 

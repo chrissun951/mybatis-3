@@ -20,8 +20,8 @@ import java.net.URL;
 
 /**
  * ClassLoaderWrapper 类的存在是为了解决 类加载器的兼容性 和 资源加载的可靠性 问题。它封装了多种类加载器的访问逻辑，确保在不同环境下（如 Web 容器、OSGi 容器、独立应用等）能正确加载类或资源
- *
- *
+ * <p>
+ * <p>
  * A class to wrap access to multiple class loaders making them work as one
  *
  * @author Clinton Begin
@@ -42,9 +42,7 @@ public class ClassLoaderWrapper {
   /**
    * Get a resource as a URL using the current class path
    *
-   * @param resource
-   *          - the resource to locate
-   *
+   * @param resource - the resource to locate
    * @return the resource or null
    */
   public URL getResourceAsURL(String resource) {
@@ -54,11 +52,8 @@ public class ClassLoaderWrapper {
   /**
    * Get a resource from the classpath, starting with a specific class loader
    *
-   * @param resource
-   *          - the resource to find
-   * @param classLoader
-   *          - the first classloader to try
-   *
+   * @param resource    - the resource to find
+   * @param classLoader - the first classloader to try
    * @return the stream or null
    */
   public URL getResourceAsURL(String resource, ClassLoader classLoader) {
@@ -68,9 +63,7 @@ public class ClassLoaderWrapper {
   /**
    * Get a resource from the classpath
    *
-   * @param resource
-   *          - the resource to find
-   *
+   * @param resource - the resource to find
    * @return the stream or null
    */
   public InputStream getResourceAsStream(String resource) {
@@ -80,11 +73,8 @@ public class ClassLoaderWrapper {
   /**
    * Get a resource from the classpath, starting with a specific class loader
    *
-   * @param resource
-   *          - the resource to find
-   * @param classLoader
-   *          - the first class loader to try
-   *
+   * @param resource    - the resource to find
+   * @param classLoader - the first class loader to try
    * @return the stream or null
    */
   public InputStream getResourceAsStream(String resource, ClassLoader classLoader) {
@@ -94,13 +84,9 @@ public class ClassLoaderWrapper {
   /**
    * Find a class on the classpath (or die trying)
    *
-   * @param name
-   *          - the class to look for
-   *
+   * @param name - the class to look for
    * @return - the class
-   *
-   * @throws ClassNotFoundException
-   *           Duh.
+   * @throws ClassNotFoundException Duh.
    */
   public Class<?> classForName(String name) throws ClassNotFoundException {
     return classForName(name, getClassLoaders(null));
@@ -109,15 +95,10 @@ public class ClassLoaderWrapper {
   /**
    * Find a class on the classpath, starting with a specific classloader (or die trying)
    *
-   * @param name
-   *          - the class to look for
-   * @param classLoader
-   *          - the first classloader to try
-   *
+   * @param name        - the class to look for
+   * @param classLoader - the first classloader to try
    * @return - the class
-   *
-   * @throws ClassNotFoundException
-   *           Duh.
+   * @throws ClassNotFoundException Duh.
    */
   public Class<?> classForName(String name, ClassLoader classLoader) throws ClassNotFoundException {
     return classForName(name, getClassLoaders(classLoader));
@@ -126,11 +107,8 @@ public class ClassLoaderWrapper {
   /**
    * Try to get a resource from a group of classloaders
    *
-   * @param resource
-   *          - the resource to get
-   * @param classLoader
-   *          - the classloaders to examine
-   *
+   * @param resource    - the resource to get
+   * @param classLoader - the classloaders to examine
    * @return the resource or null
    */
   InputStream getResourceAsStream(String resource, ClassLoader[] classLoader) {
@@ -156,11 +134,8 @@ public class ClassLoaderWrapper {
   /**
    * Get a resource as a URL using the current class path
    *
-   * @param resource
-   *          - the resource to locate
-   * @param classLoader
-   *          - the class loaders to examine
-   *
+   * @param resource    - the resource to locate
+   * @param classLoader - the class loaders to examine
    * @return the resource or null
    */
   URL getResourceAsURL(String resource, ClassLoader[] classLoader) {
@@ -198,15 +173,10 @@ public class ClassLoaderWrapper {
   /**
    * Attempt to load a class from a group of classloaders
    *
-   * @param name
-   *          - the class to load
-   * @param classLoader
-   *          - the group of classloaders to examine
-   *
+   * @param name        - the class to load
+   * @param classLoader - the group of classloaders to examine
    * @return the class
-   *
-   * @throws ClassNotFoundException
-   *           - Remember the wisdom of Judge Smails: Well, the world needs ditch diggers, too.
+   * @throws ClassNotFoundException - Remember the wisdom of Judge Smails: Well, the world needs ditch diggers, too.
    */
   Class<?> classForName(String name, ClassLoader[] classLoader) throws ClassNotFoundException {
 
@@ -231,8 +201,11 @@ public class ClassLoaderWrapper {
   }
 
   ClassLoader[] getClassLoaders(ClassLoader classLoader) {
-    return new ClassLoader[] { classLoader, defaultClassLoader, Thread.currentThread().getContextClassLoader(),
-        getClass().getClassLoader(), systemClassLoader };
+    return new ClassLoader[]{classLoader,
+      defaultClassLoader,
+      Thread.currentThread().getContextClassLoader(),
+      getClass().getClassLoader(),
+      systemClassLoader};
   }
 
 }

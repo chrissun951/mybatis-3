@@ -83,6 +83,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, args);
       }
+      //comment by sjh: 这里会调用 MapperMethodInvoker 的 invoke 方法,和MapperMethod是怎么关联起来的?
       return cachedInvoker(method).invoke(proxy, method, args, sqlSession);
     } catch (Throwable t) {
       throw ExceptionUtil.unwrapThrowable(t);
@@ -93,6 +94,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     try {
       return MapUtil.computeIfAbsent(methodCache, method, m -> {
         if (!m.isDefault()) {
+          //comment by sjh: 通过 MapperMethodInvoker 封装对 MapperMethod的调用
           return new PlainMethodInvoker(new MapperMethod(mapperInterface, method, sqlSession.getConfiguration()));
         }
         try {
@@ -129,6 +131,9 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     Object invoke(Object proxy, Method method, Object[] args, SqlSession sqlSession) throws Throwable;
   }
 
+  /**
+   * 普通方法调用
+   */
   private static class PlainMethodInvoker implements MapperMethodInvoker {
     private final MapperMethod mapperMethod;
 
@@ -138,10 +143,14 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args, SqlSession sqlSession) throws Throwable {
+      //comment by sjh: 通过MapperMethod的execute方法调用
       return mapperMethod.execute(sqlSession, args);
     }
   }
 
+  /**
+   * 默认方法调用
+   */
   private static class DefaultMethodInvoker implements MapperMethodInvoker {
     private final MethodHandle methodHandle;
 

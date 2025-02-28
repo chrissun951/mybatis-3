@@ -95,6 +95,7 @@ class ResolverUtilTest {
   @Test
   void findAnnotated() {
     ResolverUtil<Object> resolverUtil = new ResolverUtil<>();
+    // 在当前类的包路径下查找所有被@CacheNamespace注解的类
     resolverUtil.findAnnotated(CacheNamespace.class, this.getClass().getPackage().getName());
     Set<Class<?>> classSets = resolverUtil.getClasses();
     // org.apache.ibatis.io.ResolverUtilTest.TestMapper
@@ -105,6 +106,7 @@ class ResolverUtilTest {
   @Test
   void find() {
     ResolverUtil<VFS> resolverUtil = new ResolverUtil<>();
+    //在"org.apache.ibatis.io"路径下查找所有实现VFS子类
     resolverUtil.find(new ResolverUtil.IsA(VFS.class), "org.apache.ibatis.io");
     Set<Class<? extends VFS>> classSets = resolverUtil.getClasses();
     // org.apache.ibatis.io.VFS

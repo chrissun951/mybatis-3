@@ -69,10 +69,22 @@ public class SimpleStatementHandler extends BaseStatementHandler {
     statement.addBatch(sql);
   }
 
+  /**
+   *  这里的 statement是外部创建传入的,因为 handler只负责处理, 相当于一个函数,
+   *
+   *
+   * @param statement
+   * @param resultHandler
+   * @return
+   * @param <E>
+   * @throws SQLException
+   */
   @Override
   public <E> List<E> query(Statement statement, ResultHandler resultHandler) throws SQLException {
     String sql = boundSql.getSql();
+    //comment by sjh: 最终是通过java.sql.Statement 执行sql
     statement.execute(sql);
+    //comment by sjh: 通过resultSetHandler处理结果集
     return resultSetHandler.handleResultSets(statement);
   }
 

@@ -133,7 +133,10 @@ public abstract class BaseExecutor implements Executor {
   @Override
   public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler)
       throws SQLException {
-    // 从ms中取出sql---BoundSql
+    // 从MappedStatement中取出sql---BoundSql
+    // boundSql就是sql语句，是去掉if,where 等标签后的sql
+    // 其中包含了参数的占位符，还有参数的类型，还有参数的值，还有参数的映射关系，还有参数的映射类型
+    //todo 具体过程先不看,前期可以先理解为,只调用初始sql语句
     BoundSql boundSql = ms.getBoundSql(parameter);
     // 缓存?.
     CacheKey key = createCacheKey(ms, parameter, rowBounds, boundSql);
@@ -182,7 +185,8 @@ public abstract class BaseExecutor implements Executor {
         // 如果resultHandler不为null，说明从缓存中取到了数据,
         handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
       } else {
-        // 查询数据库
+        // 查询数据库:
+        //comment by sjh:  这里不考虑缓存的话,就是直接查数据库
         list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);
       }
     } finally {

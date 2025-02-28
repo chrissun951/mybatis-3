@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javassist.bytecode.SignatureAttribute.MethodSignature;
 import org.apache.ibatis.annotations.Flush;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.cursor.Cursor;
@@ -46,7 +47,13 @@ import org.apache.ibatis.session.SqlSession;
  */
 public class MapperMethod {
 
+  /**
+   * 映射文件中的sql node节点定义
+   */
   private final SqlCommand command;
+  /**
+   * 方法签名信息
+   */
   private final MethodSignature method;
 
   public MapperMethod(Class<?> mapperInterface, Method method, Configuration config) {
@@ -54,11 +61,19 @@ public class MapperMethod {
     this.method = new MethodSignature(config, mapperInterface, method);
   }
 
+  /**
+   *
+   * @param sqlSession
+   * @param args
+   * @return
+   */
   public Object execute(SqlSession sqlSession, Object[] args) {
     Object result;
     switch (command.getType()) {
       case INSERT: {
+        //comment by sjh: 提取sql的入参
         Object param = method.convertArgsToSqlCommandParam(args);
+        //comment by sjh: 通过sqlSession执行sql; 执行sql返回受影响的行数
         result = rowCountResult(sqlSession.insert(command.getName(), param));
         break;
       }
@@ -73,6 +88,7 @@ public class MapperMethod {
         break;
       }
       case SELECT:
+        //comment by sjh: 根据返回结果类型分组处理
         if (method.returnsVoid() && method.hasResultHandler()) {
           executeWithResultHandler(sqlSession, args);
           result = null;
@@ -278,6 +294,7 @@ public class MapperMethod {
     private final Class<?> returnType;
     private final String mapKey;
     private final Integer resultHandlerIndex;
+    //
     private final Integer rowBoundsIndex;
     private final ParamNameResolver paramNameResolver;
 

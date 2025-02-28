@@ -29,9 +29,17 @@ import org.apache.ibatis.session.ResultHandler;
  * StatementHandler有个基础的抽象实现类 BaseStatementHandler,BaseStatementHandler有三个具体实现类,
  * SimpleStatementHandler,PreparedStatementHandler,CallableStatementHandler.
  *
- * 但是对外,使用使用RoutingStatementHandler(实现了StatementHandler接口),
+ * 但是对外,使用RoutingStatementHandler(实现了StatementHandler接口),
  * RoutingStatementHandler通过构造器入参,使用工厂方法设计模式+委托模式,在内部保存了具体的对象引用,
  * 然后将所有请求交给委托的对象,
+ *
+ * 代理,委托?
+ *
+ *
+ * StatementHandler的作用是
+ *
+ *
+ * Statement类能够执行静态 SQL语句并返回结果(java.sql)
  *
  */
 
