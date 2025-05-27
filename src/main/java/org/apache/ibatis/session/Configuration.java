@@ -15,6 +15,11 @@
  */
 package org.apache.ibatis.session;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiFunction;
+
 import org.apache.ibatis.binding.MapperRegistry;
 import org.apache.ibatis.builder.CacheRefResolver;
 import org.apache.ibatis.builder.IncompleteElementException;
@@ -73,11 +78,6 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.registry.TypeAliasRegistry;
 import org.apache.ibatis.type.registry.TypeHandlerRegistry;
 import org.apache.ibatis.type.typehandler.EnumTypeHandler;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.BiFunction;
 
 /**
  * @author Clinton Begin

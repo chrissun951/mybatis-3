@@ -17,7 +17,6 @@ package com.chana.mybatis.test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.stream.IntStream;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
@@ -28,7 +27,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.junit.jupiter.api.Test;
 
 import generator.domain.AccountTbl;
 import generator.mapper.AccountTblMapper;

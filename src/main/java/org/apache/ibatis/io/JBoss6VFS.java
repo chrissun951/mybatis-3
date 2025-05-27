@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2024 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -88,7 +88,9 @@ public class JBoss6VFS extends VFS {
   /** Find all the classes and methods that are required to access the JBoss 6 VFS. */
   protected static void initialize() {
     lock.lock();
+    // comment by sjh: 用jboss6的vfs完成初始化
     try {
+      // comment by sjh: 初始设为true,只要一个初始化失败,则设为false
       if (valid == null) {
         // Assume valid. It will get flipped later if something goes wrong.
         valid = Boolean.TRUE;

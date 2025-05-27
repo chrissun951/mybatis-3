@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -43,8 +43,7 @@ public class ManagedTransaction implements Transaction {
   private Connection connection;
   // 是否关闭连接,可以设置连接是否已关闭,
   private final boolean closeConnection;
-  //没有设置自动提交的能力,所以这里默认设置为false
-
+  // 没有设置自动提交的能力,所以这里默认设置为false
 
   public ManagedTransaction(Connection connection, boolean closeConnection) {
     this.connection = connection;
@@ -65,7 +64,7 @@ public class ManagedTransaction implements Transaction {
     return this.connection;
   }
 
-  //提交,回滚方法实现为空,交给容器实现,
+  // 提交,回滚方法实现为空,交给容器实现,
   @Override
   public void commit() throws SQLException {
     // Does nothing

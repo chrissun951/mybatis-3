@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2022 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,8 +24,20 @@ import java.util.List;
  */
 public class InterceptorChain {
 
+  /**
+   * 按照插件的定义顺序,添加的是一个列表
+   */
   private final List<Interceptor> interceptors = new ArrayList<>();
 
+  /**
+   * 遍历所有插件,为所有的对象,封装所有插件, 每定义一个插件,就要多封装一层代理
+   *
+   *
+   * 插件先定义的在内层,,
+   * @param target
+   *
+   * @return
+   */
   public Object pluginAll(Object target) {
     for (Interceptor interceptor : interceptors) {
       target = interceptor.plugin(target);

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2024 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -97,6 +97,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     Transaction tx = null;
     try {
 
+      //环境配置,包含,事务工厂,数据源配置,
       final Environment environment = configuration.getEnvironment();
       // 根据环境配置,获取事务工厂,两种可能性:1.配置了事务工厂,2.没有配置,使用默认的事务工厂,默认JdbcTransactionFactory
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);

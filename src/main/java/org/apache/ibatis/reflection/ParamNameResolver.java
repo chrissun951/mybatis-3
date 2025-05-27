@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2024 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -66,6 +66,11 @@ public class ParamNameResolver {
    * <li>aMethod(int a, RowBounds rb, int b) -&gt; {{0, "0"}, {2, "1"}}</li>
    * </ul>
    */
+  /**
+   * key是索引,value,如果用了Param,就用Param的值为value,否则使用索引的字符串形式,
+   *
+   * 时机:在调用映射接口方法的时候确定,
+   */
   private final SortedMap<Integer, String> names;
 
   private boolean hasParamAnnotation;
@@ -89,6 +94,7 @@ public class ParamNameResolver {
         continue;
       }
       String name = null;
+      //一种方式是Param注解
       for (Annotation annotation : paramAnnotations[paramIndex]) {
         if (annotation instanceof Param) {
           hasParamAnnotation = true;
@@ -99,11 +105,13 @@ public class ParamNameResolver {
       if (name == null) {
         // @Param was not specified.
         if (useActualParamName) {
+          //配置项,如果配置了,按照配置取参数,
           name = getActualParamName(method, paramIndex);
         }
         if (name == null) {
           // use the parameter index as the name ("0", "1", ...)
           // gcode issue #71
+//          使用索引
           name = String.valueOf(map.size());
         }
       }

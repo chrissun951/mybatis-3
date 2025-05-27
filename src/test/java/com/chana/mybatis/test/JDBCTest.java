@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2024 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -29,17 +29,17 @@ public class JDBCTest {
 
     // 处理结果集
 
-    try (Connection conection = DriverManager.getConnection(url, root, number)) {
+    try (Connection connection = DriverManager.getConnection(url, root, number)) {
       // 创建sql语句
-      PreparedStatement statement = conection.prepareStatement("select * from account_tbl where id = ?");
+      PreparedStatement statement = connection.prepareStatement("select * from account_tbl where id = ?");
       statement.setInt(1, 2);
-      conection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+      connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
       // 执行sql语句
       ResultSet resultSet = statement.executeQuery();
       while (resultSet.next()) {
-        Object object1 = resultSet.getObject(1);
-        Object object2 = resultSet.getObject(2);
-        Object object3 = resultSet.getObject(3);
+        int object1 = resultSet.getInt("id");
+        String object2 = resultSet.getString("user_id");
+        int object3 = resultSet.getInt("money");
         // 拼接打印三列数据
         System.out.println(object1 + ", " + object2 + ", " + object3);
         // System.out.println(resultSet.getString("id"));

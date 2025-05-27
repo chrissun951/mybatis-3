@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2024 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -43,8 +43,10 @@ public abstract class BaseBuilder {
   protected final TypeHandlerRegistry typeHandlerRegistry;
 
   public BaseBuilder(Configuration configuration) {
+    //要么传入一个新的Configuration,要么传入一个已经加载了部分配置的Configuration,
     this.configuration = configuration;
-
+    //configuration对象初始化时,内部已经初始化了typeAliasRegistry,typeHandlerRegistry,
+    // 这里的作用是在Builder中多加一个引用,
     this.typeAliasRegistry = this.configuration.getTypeAliasRegistry();
     this.typeHandlerRegistry = this.configuration.getTypeHandlerRegistry();
   }

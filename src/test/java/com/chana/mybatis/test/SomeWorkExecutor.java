@@ -13,7 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-/**
- * Base package for cursor feature. 好像是游标的意思
- */
-package org.apache.ibatis.cursor;
+package com.chana.mybatis.test;
+
+public interface SomeWorkExecutor {
+
+  void process(MyHandler.Key key);
+}

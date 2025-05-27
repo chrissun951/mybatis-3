@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -42,10 +42,14 @@ public class Plugin implements InvocationHandler {
   }
 
   public static Object wrap(Object target, Interceptor interceptor) {
+    // comment by sjh: 目标代理方法
     Map<Class<?>, Set<Method>> signatureMap = getSignatureMap(interceptor);
+    // comment by sjh: 目标代理接口
     Class<?> type = target.getClass();
+    // comment by sjh: 可能还有父类
     Class<?>[] interfaces = getAllInterfaces(type, signatureMap);
     if (interfaces.length > 0) {
+      // comment by sjh: 通过jdk动态代理实现,代理目标接口及其父接口中的目标方法
       return Proxy.newProxyInstance(type.getClassLoader(), interfaces, new Plugin(target, interceptor, signatureMap));
     }
     return target;
@@ -54,6 +58,10 @@ public class Plugin implements InvocationHandler {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
+      // comment by sjh: 判断是否在代理方法的范围内,----所以,在生成代理对象的时候,由于wrap的目标对象是Object类型,
+      // 即便方法插件定义的目标代理的方法签名可以判断出来,也没有去做,而是选择每有几个插件,生成一层代理对象,(比如,
+      // 入口是newExecutor,可能整个插件都没有Executor相关的方法签名,但依然会生成对应的代理对象)----
+      // 而是等到运行时,判断方法是否与目标代理方法一致,
       Set<Method> methods = signatureMap.get(method.getDeclaringClass());
       if (methods != null && methods.contains(method)) {
         return interceptor.intercept(new Invocation(target, method, args));

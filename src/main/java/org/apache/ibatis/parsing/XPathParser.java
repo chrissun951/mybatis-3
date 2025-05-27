@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -257,7 +257,7 @@ public class XPathParser {
           // NOP
         }
       });
-      //在创建阶段进行了解析,调用的是jdk的解析能力,解析的结果是一个Document对象
+      // 在创建阶段进行了解析,调用的是jdk的解析能力,解析的结果是一个Document对象
       return builder.parse(inputSource);
     } catch (Exception e) {
       throw new BuilderException("Error creating document instance.  Cause: " + e, e);

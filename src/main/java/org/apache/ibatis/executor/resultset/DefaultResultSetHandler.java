@@ -185,6 +185,34 @@ public class DefaultResultSetHandler implements ResultSetHandler {
   //
   // HANDLE RESULT SETS
   //
+
+  /**
+   * 是 ResultSetHandler 接口的核心方法之一，主要负责处理 JDBC Statement 执行后返回的结果集（ ResultSet ），并将其映射成 Java 对象列表。它是 MyBatis 结果集处理流程的入口点。
+   *
+   * 主要逻辑是迭代处理由一个 Statement 可能返回的多个结果集。这在执行存储过程或批处理语句时比较常见。对于每个结果集，它会根据 MappedStatement 中配置的 ResultMap 进行映射
+   *
+   *
+   *
+   * 扩展点：
+   *
+   * - ResultSetHandler 接口： 整个结果集处理过程可以通过实现 ResultSetHandler 接口进行完全替换。
+   * - 插件机制： MyBatis 的插件可以拦截 ResultSetHandler 的方法，包括 handleResultSets 和 handleCursorResultSets ，从而在结果集处理的不同阶段插入自定义逻辑，例如修改结果集数据、改变映射方式等。
+   * - ResultMap 配置(更常用)： 通过在 Mapper XML 或注解中灵活配置 ResultMap ，可以控制结果集到 Java 对象的映射细节，包括列与属性的对应、类型转换、嵌套查询、嵌套结果集等。
+   * - TypeHandler ： 在结果集映射过程中，MyBatis 使用 TypeHandler 来处理 JDBC 类型和 Java 类型之间的转换。可以自定义 TypeHandler 来支持特定的类型转换需求。
+   *
+   *
+   * 设计特点：
+   * - 单一职责： DefaultResultSetHandler 专注于结果集的处理和映射，与其他阶段（如 SQL 执行、参数设置）分离。
+   * - 策略模式/模板方法： handleResultSet 方法（虽然在此代码片段中未完全展示）内部通常会包含具体的映射逻辑，而 handleResultSets 则提供了一个处理多个结果集的模板流程。
+   * - 可扩展性： 通过接口和插件机制提供了丰富的扩展点，允许开发者定制结果集处理行为。
+   *
+   *
+   * 总的来说， handleResultSets 方法是 MyBatis 结果集处理的核心协调者，它负责驱动整个结果集到 Java 对象的映射过程，并考虑了多种结果集返回场景和嵌套映射的需求。
+   *
+   * @param stmt
+   * @return
+   * @throws SQLException
+   */
   @Override
   public List<Object> handleResultSets(Statement stmt) throws SQLException {
     ErrorContext.instance().activity("handling results").object(mappedStatement.getId());
@@ -192,11 +220,21 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     final List<Object> multipleResults = new ArrayList<>();
 
     int resultSetCount = 0;
+    //获取第一个结果集 ( getFirstResultSet )： 通过 stmt.getResultSet() 获取第一个结果集。考虑到某些 JDBC 驱动的特性（如 HSQLDB 可能不会将结果集作为第一个结果返回），这里会循环调用 stmt.getMoreResults() 直到获取到结果集或确定没有更多结果。获取到的 ResultSet 会被封装成 ResultSetWrapper 对象，方便后续处理。
     ResultSetWrapper rsw = getFirstResultSet(stmt);
 
+    //验证 ResultMap 数量 ( validateResultMapsCount )： 检查获取到的结果集数量是否与 MappedStatement 中配置的 ResultMap 数量匹配。如果不匹配且存在结果集，会抛出异常
     List<ResultMap> resultMaps = mappedStatement.getResultMaps();
     int resultMapCount = resultMaps.size();
     validateResultMapsCount(rsw, resultMapCount);
+
+    //循环处理主要结果集： 使用 while (rsw != null && resultMapCount > resultSetCount) 循环处理与 MappedStatement 中直接配置的 ResultMap 对应的结果集。
+    // 在循环内部：
+    //- 获取当前需要使用的 ResultMap 。
+    //- 调用 handleResultSet 方法处理当前结果集，将数据映射到 Java 对象，并将结果添加到 multipleResults 列表中。
+    //- 调用 getNextResultSet 获取下一个结果集。
+    //- 调用 cleanUpAfterHandlingResultSet 清理处理当前结果集后可能留下的状态（例如嵌套结果集相关的缓存）。
+    //- 增加结果集计数器。
     while (rsw != null && resultMapCount > resultSetCount) {
       ResultMap resultMap = resultMaps.get(resultSetCount);
       handleResultSet(rsw, resultMap, multipleResults, null);
@@ -205,6 +243,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
       resultSetCount++;
     }
 
+    //循环处理嵌套结果集 ( resultSets )： 如果 MappedStatement 配置了 resultSets 属性（用于处理存储过程返回的多个结果集，并将它们映射到嵌套属性），则进入此循环。它会根据 resultSets 数组中指定的名称查找对应的 ResultMapping ，然后获取嵌套的 ResultMap ，并调用 handleResultSet 处理该结果集。
     String[] resultSets = mappedStatement.getResultSets();
     if (resultSets != null) {
       while (rsw != null && resultSetCount < resultSets.length) {
@@ -220,6 +259,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
       }
     }
 
+    //合并结果列表 ( collapseSingleResultList )： 如果最终的结果列表 multipleResults 中只包含一个元素，并且这个元素本身是一个列表，则返回这个内部列表。这通常发生在查询返回单个列表结果的情况下。
     return collapseSingleResultList(multipleResults);
   }
 
@@ -241,6 +281,13 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     return new DefaultCursor<>(this, resultMap, rsw, rowBounds);
   }
 
+  /**
+   *
+   * 获取第一个结果集 ( getFirstResultSet )： 通过 stmt.getResultSet() 获取第一个结果集。考虑到某些 JDBC 驱动的特性（如 HSQLDB 可能不会将结果集作为第一个结果返回），这里会循环调用 stmt.getMoreResults() 直到获取到结果集或确定没有更多结果。获取到的 ResultSet 会被封装成 ResultSetWrapper 对象，方便后续处理。
+   * @param stmt
+   * @return
+   * @throws SQLException
+   */
   private ResultSetWrapper getFirstResultSet(Statement stmt) throws SQLException {
     ResultSet rs = stmt.getResultSet();
     while (rs == null) {

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.CacheException;
 
 /**
+ * 当缓存中没有对应缓存结果,应该查询数据库填充缓存, 在获取到数据库结果填充缓存前,若有相同key的新的查询请求,应阻塞
  * <p>
  * Simple blocking decorator
  * <p>
@@ -38,6 +39,7 @@ public class BlockingCache implements Cache {
 
   private long timeout;
   private final Cache delegate;
+  // CountDownLatch对比 ReentrantLock
   private final ConcurrentHashMap<Object, CountDownLatch> locks;
 
   public BlockingCache(Cache delegate) {
@@ -71,6 +73,7 @@ public class BlockingCache implements Cache {
     if (value != null) {
       releaseLock(key);
     }
+    // comment by sjh: 若缓存中没有获取到value,不会释放锁,需要等到从数据库返回结果后,通过putObject方法释放锁,
     return value;
   }
 
@@ -87,6 +90,7 @@ public class BlockingCache implements Cache {
   }
 
   private void acquireLock(Object key) {
+    // comment by sjh:
     CountDownLatch newLatch = new CountDownLatch(1);
     while (true) {
       CountDownLatch latch = locks.putIfAbsent(key, newLatch);
@@ -110,6 +114,8 @@ public class BlockingCache implements Cache {
   }
 
   private void releaseLock(Object key) {
+    // comment by sjh: 在使用 ReentrantLock的版本中, 并没有从locks中释放锁,只是取出后解锁(unlock),
+    // 因此存在OOM的可能
     CountDownLatch latch = locks.remove(key);
     if (latch == null) {
       throw new IllegalStateException("Detected an attempt at releasing unacquired lock. This should never happen.");

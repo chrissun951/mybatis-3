@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2024 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -94,9 +94,9 @@ public class XMLMapperBuilder extends BaseBuilder {
   }
 
   public void parse() {
-    //是否是第一次解析
+    // 是否是第一次解析
     if (!configuration.isResourceLoaded(resource)) {
-      //mapper.xml的根节点是/mapper
+      // mapper.xml的根节点是/mapper
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
       bindMapperForNamespace();

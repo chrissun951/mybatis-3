@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2023 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -93,22 +93,22 @@ public class CachingExecutor implements Executor {
   @Override
   public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler,
       CacheKey key, BoundSql boundSql) throws SQLException {
-    //查询缓存
+    // 查询缓存
     Cache cache = ms.getCache();
-    if (cache != null) {//如果映射文件不存在cache/cache-ref属性，为null
-      //判断语句上是否配置了flushCache属性
-      //如果配置了flushCache属性，则清空缓存
+    if (cache != null) {// 如果映射文件不存在cache/cache-ref属性，为null
+      // 判断语句上是否配置了flushCache属性
+      // 如果配置了flushCache属性，则清空缓存
       flushCacheIfRequired(ms);
       if (ms.isUseCache() && resultHandler == null) {
-        //二级缓存不支持含有输出参数的callable语句
+        // 二级缓存不支持含有输出参数的callable语句
         ensureNoOutParams(ms, boundSql);
         @SuppressWarnings("unchecked")
-        //通过事务缓存管理器获取缓存,因为事务中的缓存,对应缓存是在提交后才会写入,提交前是记录在事务缓存内部的,
+        // 通过事务缓存管理器获取缓存,因为事务中的缓存,对应缓存是在提交后才会写入,提交前是记录在事务缓存内部的,
         List<E> list = (List<E>) tcm.getObject(cache, key);
         if (list == null) {
-          //缓存不存在,查询数据库
+          // 缓存不存在,查询数据库
           list = delegate.query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
-          //查询结果放入事务缓存,在事务提交时再写入缓存
+          // 查询结果放入事务缓存,在事务提交时再写入缓存
           tcm.putObject(cache, key, list); // issue #578 and #116
         }
         return list;

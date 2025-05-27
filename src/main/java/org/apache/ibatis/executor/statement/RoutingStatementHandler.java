@@ -37,7 +37,10 @@ public class RoutingStatementHandler implements StatementHandler {
   private final StatementHandler delegate;
 
   /**
-   * 这属于一个什么设计模式???---工厂方法设计模式
+   * 这属于一个什么设计模式???---代理+工厂方法设计模式
+   *
+   * 工厂: 构造器内部根据不同情况构造不同的StatementHandler返回,
+   * 代理: 工厂生产的对象为StatementHandler,自己又实现了StatementHandler接口
    *
    * @param executor
    * @param ms
@@ -54,6 +57,7 @@ public class RoutingStatementHandler implements StatementHandler {
         delegate = new SimpleStatementHandler(executor, ms, parameter, rowBounds, resultHandler, boundSql);
         break;
       case PREPARED:
+        //PREPARED,默认
         delegate = new PreparedStatementHandler(executor, ms, parameter, rowBounds, resultHandler, boundSql);
         break;
       case CALLABLE:
