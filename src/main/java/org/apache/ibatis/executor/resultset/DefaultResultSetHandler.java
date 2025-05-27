@@ -457,11 +457,13 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     final ResultLoaderMap lazyLoader = new ResultLoaderMap();
     Object rowValue = createResultObject(rsw, resultMap, lazyLoader, columnPrefix);
     if (rowValue != null && !hasTypeHandlerForResultObject(rsw, resultMap.getType())) {
+      //结果值的类型用MetaObject包装了一下
       final MetaObject metaObject = configuration.newMetaObject(rowValue);
       boolean foundValues = this.useConstructorMappings;
       if (shouldApplyAutomaticMappings(resultMap, false)) {
         foundValues = applyAutomaticMappings(rsw, resultMap, metaObject, columnPrefix) || foundValues;
       }
+      //这一步会把查询到数据写入rowValue
       foundValues = applyPropertyMappings(rsw, resultMap, metaObject, lazyLoader, columnPrefix) || foundValues;
       foundValues = lazyLoader.size() > 0 || foundValues;
       rowValue = foundValues || configuration.isReturnInstanceForEmptyRow() ? rowValue : null;
@@ -527,8 +529,10 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
   private boolean applyPropertyMappings(ResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject,
       ResultLoaderMap lazyLoader, String columnPrefix) throws SQLException {
+    //ResultMap中的字段值,大写
     final Set<String> mappedColumnNames = rsw.getMappedColumnNames(resultMap, columnPrefix);
     boolean foundValues = false;
+    //从ResultMap中取出属性和字段对应关系,
     final List<ResultMapping> propertyMappings = resultMap.getPropertyResultMappings();
     for (ResultMapping propertyMapping : propertyMappings) {
       String column = prependPrefix(propertyMapping.getColumn(), columnPrefix);
@@ -539,9 +543,11 @@ public class DefaultResultSetHandler implements ResultSetHandler {
       if (propertyMapping.isCompositeResult()
           || column != null && mappedColumnNames.contains(column.toUpperCase(Locale.ENGLISH))
           || propertyMapping.getResultSet() != null) {
+        //取字段对应值,
         Object value = getPropertyMappingValue(rsw.getResultSet(), metaObject, propertyMapping, lazyLoader,
             columnPrefix);
         // issue #541 make property optional
+        //取出列对应java对象的属性值
         final String property = propertyMapping.getProperty();
         if (property == null) {
           continue;
@@ -553,11 +559,18 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         if (value != null) {
           foundValues = true;
         }
-        if (value != null
-            || configuration.isCallSettersOnNulls() && !metaObject.getSetterType(property).isPrimitive()) {
+        // 设置值的条件：
+        // 1. value不为null，或者
+        // 2. 配置允许在null时调用setter且属性不是基本数据类型
+        boolean shouldSetValue = (value != null) ||
+          (configuration.isCallSettersOnNulls() &&
+            !metaObject.getSetterType(property).isPrimitive());
+
+        if (shouldSetValue) {
           // gcode issue #377, call setter on nulls (value is not 'found')
           metaObject.setValue(property, value);
         }
+        //如果value==null,则foundValues为false
       }
     }
     return foundValues;
@@ -566,14 +579,19 @@ public class DefaultResultSetHandler implements ResultSetHandler {
   private Object getPropertyMappingValue(ResultSet rs, MetaObject metaResultObject, ResultMapping propertyMapping,
       ResultLoaderMap lazyLoader, String columnPrefix) throws SQLException {
     if (propertyMapping.getNestedQueryId() != null) {
+      //嵌套查询
       return getNestedQueryMappingValue(rs, metaResultObject, propertyMapping, lazyLoader, columnPrefix);
     }
     if (propertyMapping.getResultSet() != null) {
+      //多结果集: 标记为 DEFERRED 延迟加载
       addPendingChildRelation(rs, metaResultObject, propertyMapping); // TODO is that OK?
       return DEFERRED;
     } else {
+      //常规映射: 使用 TypeHandler 直接获取值
+      //propertyMapping(ResultMapping)某个字段的映射,类型,处理器等
       final TypeHandler<?> typeHandler = propertyMapping.getTypeHandler();
       final String column = prependPrefix(propertyMapping.getColumn(), columnPrefix);
+      //有了TypeHandler,有ResultSet,有列名,调用ResultSet.getXxx(列名)即可取到对应字段的值,Xxx为列的字段类型,
       return typeHandler.getResult(rs, column);
     }
   }
