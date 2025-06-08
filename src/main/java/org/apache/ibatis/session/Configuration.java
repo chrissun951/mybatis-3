@@ -148,6 +148,11 @@ public class Configuration {
     .conflictMessageProducer((savedValue, targetValue) -> ". please check " + savedValue.getResource() + " and "
       + targetValue.getResource());
   protected final Map<String, Cache> caches = new StrictMap<>("Caches collection");
+  /**
+   * 解析映射文件中的resultMap
+   *
+   * key为 ResultMap配置的id,
+   */
   protected final Map<String, ResultMap> resultMaps = new StrictMap<>("Result Maps collection");
   protected final Map<String, ParameterMap> parameterMaps = new StrictMap<>("Parameter Maps collection");
   protected final Map<String, KeyGenerator> keyGenerators = new StrictMap<>("Key Generators collection");
@@ -370,6 +375,14 @@ public class Configuration {
     loadedResources.add(resource);
   }
 
+  /**
+   * 有几种形式
+   * 1.namespace:映射接口全路径,如,namespace:generator.mapper.AccountTblMapper
+   * 2.映射文件相对路径,如,mapper/AccountTblMapper.xml
+   * 3.interface 映射接口全路径,如,interface generator.mapper.AccountTblMapper
+   * @param resource
+   * @return
+   */
   public boolean isResourceLoaded(String resource) {
     return loadedResources.contains(resource);
   }
@@ -1071,10 +1084,16 @@ public class Configuration {
     }
   }
 
+  /**
+   * 嵌套ResultMap
+   * 鉴别器
+   */
   // Slow but a one time cost. A better solution is welcome.
   protected void checkLocallyForDiscriminatedNestedResultMaps(ResultMap rm) {
     if (!rm.hasNestedResultMaps() && rm.getDiscriminator() != null) {
-      for (String discriminatedResultMapName : rm.getDiscriminator().getDiscriminatorMap().values()) {
+      for (String discriminatedResultMapName :
+        rm.getDiscriminator().getDiscriminatorMap().values()) {
+
         if (hasResultMap(discriminatedResultMapName)) {
           ResultMap discriminatedResultMap = resultMaps.get(discriminatedResultMapName);
           if (discriminatedResultMap.hasNestedResultMaps()) {
@@ -1082,6 +1101,7 @@ public class Configuration {
             break;
           }
         }
+
       }
     }
   }

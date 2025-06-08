@@ -123,7 +123,8 @@ public class MapperAnnotationBuilder {
         if (!canHaveStatement(method)) {
           continue;
         }
-        if (getAnnotationWrapper(method, false, Select.class, SelectProvider.class).isPresent()
+        if (getAnnotationWrapper(method, false,
+          Select.class, SelectProvider.class).isPresent()
             && method.getAnnotation(ResultMap.class) == null) {
           parseResultMap(method);
         }
@@ -160,7 +161,8 @@ public class MapperAnnotationBuilder {
         }
       }
       if (inputStream != null) {
-        XMLMapperBuilder xmlParser = new XMLMapperBuilder(inputStream, assistant.getConfiguration(), xmlResource,
+        XMLMapperBuilder xmlParser = new XMLMapperBuilder
+          (inputStream, assistant.getConfiguration(), xmlResource,
             configuration.getSqlFragments(), type.getName());
         xmlParser.parse();
       }

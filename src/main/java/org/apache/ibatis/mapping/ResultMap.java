@@ -80,6 +80,11 @@ public class ResultMap {
       return resultMap.type;
     }
 
+    /**
+     * ResultMap 的构建
+     *
+     * @return
+     */
     public ResultMap build() {
       if (resultMap.id == null) {
         throw new IllegalArgumentException("ResultMaps must have an id");
@@ -138,6 +143,7 @@ public class ResultMap {
         });
       }
       // lock down collections
+      // unmodifiableList
       resultMap.resultMappings = Collections.unmodifiableList(resultMap.resultMappings);
       resultMap.idResultMappings = Collections.unmodifiableList(resultMap.idResultMappings);
       resultMap.constructorResultMappings = Collections.unmodifiableList(resultMap.constructorResultMappings);

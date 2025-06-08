@@ -17,15 +17,24 @@ package com.chana.mybatis.test;
 
 import java.sql.*;
 
-public class JDBCTest {
+import org.junit.Test;
 
-  public static void main(String[] args) throws SQLException {
-    // jdbc连接数据库
-    // Class.forName("com.mysql.cj.jdbc.Driver");
-    // 创建数据库连接对象
-    String url = "jdbc:mysql://localhost:33106/db_account?useUnicode=true" + "&characterEncoding=utf-8";
-    String root = "root";
-    String number = "123456";
+public class JDBCTest {
+  // jdbc连接数据库
+  // Class.forName("com.mysql.cj.jdbc.Driver");
+  // 创建数据库连接对象
+  String url = "jdbc:mysql://localhost:33106/db_account?useUnicode=true" + "&characterEncoding=utf-8";
+  String root = "root";
+  String number = "123456";
+
+  @Test
+  public void testJDBC2() {
+  }
+
+
+  @Test
+  public void testJDBC1() {
+
 
     // 处理结果集
 
@@ -35,7 +44,10 @@ public class JDBCTest {
       statement.setInt(1, 2);
       connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
       // 执行sql语句
-      ResultSet resultSet = statement.executeQuery();
+//      ResultSet resultSet = statement.executeQuery();
+      boolean execute = statement.execute();
+      System.out.println("execute = " + execute);
+      ResultSet resultSet = statement.getResultSet();
       while (resultSet.next()) {
         int object1 = resultSet.getInt("id");
         String object2 = resultSet.getString("user_id");

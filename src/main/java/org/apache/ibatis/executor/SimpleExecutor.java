@@ -1,5 +1,5 @@
 /*
- *    Copyright 2009-2024 the original author or authors.
+ *    Copyright 2009-2025 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -46,25 +46,38 @@ public class SimpleExecutor extends BaseExecutor {
     try {
       Configuration configuration = ms.getConfiguration();
       StatementHandler handler = configuration.newStatementHandler(this, ms, parameter, RowBounds.DEFAULT, null, null);
+      //构造Statement,设置参数
       stmt = prepareStatement(handler, ms.getStatementLog());
+      //通过Statement执行sql
       return handler.update(stmt);
     } finally {
       closeStatement(stmt);
     }
   }
 
+  /**
+   * 和update类似
+   * @param ms
+   * @param parameter
+   * @param rowBounds
+   * @param resultHandler
+   * @param boundSql
+   * @return
+   * @param <E>
+   * @throws SQLException
+   */
   @Override
   public <E> List<E> doQuery(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler,
       BoundSql boundSql) throws SQLException {
     // 以SimpleExecutor的查询过程为基础逻辑,
-    //todo java.sql.Statement怎么理解
+    // todo java.sql.Statement怎么理解
     Statement stmt = null;
     try {
       Configuration configuration = ms.getConfiguration();
       StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler,
           boundSql);
       stmt = prepareStatement(handler, ms.getStatementLog());
-      //comment by sjh: 最终是通过 StatementHandler实现的查询
+      // comment by sjh: 最终是通过 StatementHandler实现的查询
       return handler.query(stmt, resultHandler);
     } finally {
       closeStatement(stmt);
@@ -90,9 +103,11 @@ public class SimpleExecutor extends BaseExecutor {
   private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
     // 这里的Statement是JDBC的Statement
     Statement stmt;
-    // 获取连接
+    // 获取连接,入参是Log
     Connection connection = getConnection(statementLog);
+    //使用配置信息创建了一个java.sql.Statement
     stmt = handler.prepare(connection, transaction.getTimeout());
+    //设置参数
     handler.parameterize(stmt);
     return stmt;
   }

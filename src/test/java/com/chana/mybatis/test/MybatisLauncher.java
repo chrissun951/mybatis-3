@@ -22,10 +22,7 @@ import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.session.*;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 import generator.domain.AccountTbl;
@@ -88,7 +85,7 @@ public class MybatisLauncher {
     inputStream = Resources.getResourceAsStream(resource);
     //解析过程,是通过build实现
     SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
+//    SqlSessionManager sqlSessionManager = SqlSessionManager.newInstance(inputStream);
 
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       AccountTblMapper mapper = sqlSession.getMapper(AccountTblMapper.class);

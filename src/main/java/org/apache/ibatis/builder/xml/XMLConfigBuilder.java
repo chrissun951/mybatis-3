@@ -409,6 +409,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
     for (XNode child : context.getChildren()) {
       if ("package".equals(child.getName())) {
+        //package方式
         String mapperPackage = child.getStringAttribute("name");
         configuration.addMappers(mapperPackage);
       } else {
@@ -416,6 +417,7 @@ public class XMLConfigBuilder extends BaseBuilder {
         String url = child.getStringAttribute("url");
         String mapperClass = child.getStringAttribute("class");
         if (resource != null && url == null && mapperClass == null) {
+          //resource 方式
           ErrorContext.instance().resource(resource);
           try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource,
@@ -423,6 +425,7 @@ public class XMLConfigBuilder extends BaseBuilder {
             mapperParser.parse();
           }
         } else if (resource == null && url != null && mapperClass == null) {
+          //url 方式
           ErrorContext.instance().resource(url);
           try (InputStream inputStream = Resources.getUrlAsStream(url)) {
             XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, url,
@@ -430,6 +433,7 @@ public class XMLConfigBuilder extends BaseBuilder {
             mapperParser.parse();
           }
         } else if (resource == null && url == null && mapperClass != null) {
+          //mapperClass 方式
           Class<?> mapperInterface = Resources.classForName(mapperClass);
           configuration.addMapper(mapperInterface);
         } else {
@@ -450,6 +454,11 @@ public class XMLConfigBuilder extends BaseBuilder {
     return environment.equals(id);
   }
 
+  /**
+   * 反射创建对象
+   * @param configClass
+   * @return
+   */
   private static Configuration newConfig(Class<? extends Configuration> configClass) {
     try {
       return configClass.getDeclaredConstructor().newInstance();
